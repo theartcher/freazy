@@ -1,3 +1,4 @@
+import 'package:freazy/models/item-autocomplete-suggestions.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:freazy/models/item.dart';
@@ -136,6 +137,19 @@ class DatabaseHelper {
     List<Item> items = itemMap.map((map) => Item.fromMap(map)).toList();
 
     return items.map((item) => item.weightUnit).toSet().toList();
+  }
+
+  Future<ItemAutoCompleteSuggestions> fetchAutocompleteSuggestions() async {
+    List<String> existingCategories = await fetchExistingCategories();
+    List<String> existingTitles = await fetchExistingTitles();
+    List<String> existingFreezers = await fetchExistingFreezers();
+    List<String> existingWeightUnits = await fetchExistingWeightUnits();
+
+    return ItemAutoCompleteSuggestions(
+        categories: existingCategories,
+        titles: existingTitles,
+        freezers: existingFreezers,
+        weightUnits: existingWeightUnits);
   }
 
   Future<String> fetchCommonWeightUnit() async {

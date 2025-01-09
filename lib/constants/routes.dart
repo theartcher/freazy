@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
-import 'package:freazy/pages/frozen_items/details.dart';
+import 'package:freazy/pages/frozen_item/details.dart';
 import 'package:freazy/pages/settings.dart';
 import 'package:freazy/pages/home.dart';
 

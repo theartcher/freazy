@@ -34,28 +34,16 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
   List<String> _existingWeightUnits = [];
   bool _isLoading = false;
 
-  Item selectedItem = Item(null, '', 0, 'g', DateTime.now(),
-      DateTime.now().add(const Duration(days: 14)), '', '');
+  Item selectedItem = Item.empty();
 
   @override
   void initState() {
     super.initState();
-
-    // Initialize fields with existing item data if editing
-    if (widget.item != null) {
-      selectedItem.title = widget.item!.title;
-      selectedItem.weight = widget.item!.weight;
-      selectedItem.weightUnit = widget.item!.weightUnit;
-      selectedItem.freezeDate = widget.item!.freezeDate;
-      selectedItem.expirationDate = widget.item!.expirationDate;
-      selectedItem.category = widget.item!.category;
-      selectedItem.freezer = widget.item!.freezer;
-    }
-
-    _initializeFuture = _initializeData();
+    selectedItem = widget.item ?? Item.empty();
+    _initializeFuture = _initialize();
   }
 
-  Future<void> _initializeData() async {
+  Future<void> _initialize() async {
     //Fetch all existing objects for suggestions in autocomplete fields.
     final titles = await _dbHelper.fetchExistingTitles();
     final freezers = await _dbHelper.fetchExistingFreezers();
@@ -103,32 +91,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
               : IconButton(
                   icon: const Icon(Icons.check),
                   focusNode: _focusHelper.sendFormFocusNode,
-                  onPressed: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-
-                      selectedItem.id = widget.item?.id;
-
-                      if (widget.item == null) {
-                        await _dbHelper.insertItem(selectedItem);
-                      } else {
-                        await _dbHelper.updateItem(selectedItem);
-                      }
-
-                      context.pop(true);
-                    } else {
-                      setState(() {
-                        _isLoading = false;
-                      });
-
-                      _formKey.currentState!.reset();
-                    }
-                  },
-                ),
+                  onPressed: _onSavePressed)
         ],
       ),
       body: FutureBuilder<void>(
@@ -279,5 +242,31 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
         },
       ),
     );
+  }
+
+  Future<void> _onSavePressed() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      selectedItem.id = widget.item?.id;
+
+      if (widget.item == null) {
+        await _dbHelper.insertItem(selectedItem);
+      } else {
+        await _dbHelper.updateItem(selectedItem);
+      }
+
+      context.pop(true);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+
+      _formKey.currentState!.reset();
+    }
   }
 }

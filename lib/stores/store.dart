@@ -1,5 +1,4 @@
 import 'package:freazy/stores/reducers.dart';
-import 'package:redux/redux.dart';
 
 class AppState {
   final String product;
@@ -23,7 +22,7 @@ class AppState {
   AppState.initial()
       : product = '',
         weight = 0,
-        weightUnit = '',
+        weightUnit = 'g',
         freezer = '',
         category = '',
         freezeDate = DateTime.now(),
