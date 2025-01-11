@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () async {
-                final result = await context.push(ROUTE_ITEM_DETAILS);
+                final result = await context.push(ROUTE_ITEM_ADD);
 
                 if (result == true) {
                   _fetchItems();
