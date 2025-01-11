@@ -47,7 +47,11 @@ class _InputWithSuggestionsState extends State<InputWithSuggestions> {
         Expanded(
           child: Autocomplete<String>(
             optionsBuilder: (TextEditingValue textEditingValue) {
-              return widget.autocompleteSuggestions.where((String option) {
+              return widget.autocompleteSuggestions
+                  .map((option) =>
+                      option.trim()) // Trim leading and trailing spaces
+                  .toSet() // Remove duplicates
+                  .where((String option) {
                 return option.toLowerCase().contains(
                       textEditingValue.text.toLowerCase(),
                     );
