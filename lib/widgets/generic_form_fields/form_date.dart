@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freazy/widgets/form_fields/date_input_formatter.dart';
+import 'package:freazy/widgets/generic_form_fields/date_input_formatter.dart';
 
 class DateInput extends StatefulWidget {
   final FocusNode focusNode;

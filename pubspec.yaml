@@ -14,6 +14,7 @@ dependencies:
   fuzzywuzzy: ^1.2.0
   go_router: ^14.6.3
   intl: ^0.20.1
+  provider: ^6.1.2
   sqflite: ^2.4.1
 
 dev_dependencies:

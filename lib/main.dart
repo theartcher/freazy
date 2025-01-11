@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/constants/routes.dart';
+import 'package:freazy/stores/item-store.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MainApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => FrozenItemStore(),
+    child: const MainApp(),
+  ));
 }
 
 class MainApp extends StatelessWidget {
