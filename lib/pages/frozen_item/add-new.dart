@@ -15,16 +15,14 @@ import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/db_helper.dart';
 import 'package:provider/provider.dart';
 
-class EditItemPage extends StatefulWidget {
-  final Item item;
-
-  const EditItemPage({super.key, required this.item});
+class AddItemPage extends StatefulWidget {
+  const AddItemPage({super.key});
 
   @override
-  State<EditItemPage> createState() => _EditItemPageState();
+  State<AddItemPage> createState() => _AddItemPageState();
 }
 
-class _EditItemPageState extends State<EditItemPage> {
+class _AddItemPageState extends State<AddItemPage> {
   final _formKey = GlobalKey<FormState>();
   final _focusHelper = FormFocusHelper();
   final _dbHelper = DatabaseHelper();
@@ -44,8 +42,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
   Future<void> _initialize() async {
     final existingSuggestions = await _dbHelper.fetchAutocompleteSuggestions();
-
-    store.setItem(widget.item);
+    store.clearItem();
 
     setState(() {
       suggestions = existingSuggestions;
@@ -66,8 +63,7 @@ class _EditItemPageState extends State<EditItemPage> {
       _formKey.currentState!.save();
 
       Item selectedItem = store.getItem();
-      selectedItem.id = widget.item.id;
-      await _dbHelper.updateItem(selectedItem);
+      await _dbHelper.insertItem(selectedItem);
 
       store.clearItem();
       // ignore: use_build_context_synchronously
@@ -94,7 +90,7 @@ class _EditItemPageState extends State<EditItemPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => exitWithoutSaving(),
         ),
-        title: const Text("Product bewerken"),
+        title: const Text("Product toevoegen"),
         actions: [
           _isLoading
               ? Container(
