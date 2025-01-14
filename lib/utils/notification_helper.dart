@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/db_helper.dart';
 import 'package:freazy/utils/preferences_manager.dart';
@@ -5,6 +6,8 @@ import 'package:freazy/utils/preferences_manager.dart';
 class NotificationHelper {
   Future<bool> sendNotifications() async {
     DatabaseHelper db = DatabaseHelper();
+
+    print("Checking for notifications");
 
     // Get all items
     List<Item> items = await db.fetchItems();
@@ -17,7 +20,7 @@ class NotificationHelper {
         await PreferencesManager().loadDurations();
 
     // If there are no notification frequencies, there is no need to check for notifications
-    if (notificationFrequencies.isEmpty) return false;
+    // if (notificationFrequencies.isEmpty) return false;
 
     print('Checking for notifications');
 
@@ -25,8 +28,32 @@ class NotificationHelper {
     List<Item> itemsToNotifyAbout =
         _getItemsToNotify(items, notificationFrequencies);
 
+    print("Items checked");
+
     //Format the notification string.
-    // E.g. -> If 1 item, note specific item. If multiple items, note the number of items. Also note items overdue.
+    //TODO Apply notification string to the notification
+    String notificationString = _formatNotificationString(itemsToNotifyAbout);
+
+    print(await AwesomeNotifications().isNotificationAllowed());
+
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      print("Not allowed lolz!");
+      if (!isAllowed) {
+        // This is just a basic example. You can show a dialog or any other UI to request permission.
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 10,
+      channelKey: 'basic_channel',
+      actionType: ActionType.Default,
+      title: 'Hello World!',
+      body: 'This is my first notification!',
+    ));
+
+    // Send the notification
 
     return true;
   }

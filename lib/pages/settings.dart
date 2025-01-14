@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freazy/widgets/settings/notifications_selector.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/utils/db_helper.dart';
 import 'package:freazy/widgets/settings/dropdown_setting.dart';
@@ -60,13 +61,14 @@ class _SettingsPageState extends State<SettingsPage> {
             isToggled: _receiveNotifications,
             changeValue: _toggleNotifications,
           ),
+
           DropdownSetting(
             options: notificationFrequencyOptions,
             selectedOption: 'Wekelijks',
             title: 'Melding frequency',
           ),
           const Divider(),
-
+          NotificationSettings(),
           // Section: Appearance
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
