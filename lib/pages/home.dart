@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freazy/utils/notification_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
@@ -76,6 +77,11 @@ class _HomePageState extends State<HomePage> {
           scrolledUnderElevation: 0,
           title: Text(title),
           actions: [
+            IconButton(
+              icon: const Icon(Icons.dangerous),
+              onPressed: () => NotificationHelper().sendNotifications(),
+              color: Colors.red,
+            ),
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () async {
