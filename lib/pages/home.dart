@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/models/sort_type.dart';
-import 'package:freazy/utils/db_helper.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/utils/search_helper.dart';
 import 'package:freazy/utils/sorting_helper.dart';
 import 'package:freazy/widgets/home/list_tile.dart';
@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final ItemDatabaseHelper _dbHelper = ItemDatabaseHelper();
   final title = 'Freazy';
 
   SortType _selectedSorting = SortType.toExpire;

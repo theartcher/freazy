@@ -1,11 +1,11 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:freazy/models/item.dart';
-import 'package:freazy/utils/db_helper.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/utils/preferences_manager.dart';
 
 class NotificationHelper {
   Future<bool> sendNotifications() async {
-    DatabaseHelper db = DatabaseHelper();
+    ItemDatabaseHelper db = ItemDatabaseHelper();
 
     print("Checking for notifications");
 

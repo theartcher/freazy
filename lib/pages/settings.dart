@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:freazy/widgets/settings/notifications_selector.dart';
+import 'package:freazy/utils/preferences_manager.dart';
+import 'package:freazy/widgets/settings/menu_setting.dart';
+import 'package:freazy/widgets/settings/reminders.dart';
+import 'package:freazy/widgets/settings/reminders_dialogue.dart';
 import 'package:go_router/go_router.dart';
-import 'package:freazy/utils/db_helper.dart';
-import 'package:freazy/widgets/settings/dropdown_setting.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/widgets/settings/toggle_switch_setting.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -13,17 +15,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final ItemDatabaseHelper _dbHelper = ItemDatabaseHelper();
 
-  bool _receiveNotifications = false;
   bool _darkMode = false;
-  bool _locationServices = true;
-  List<String> notificationFrequencyOptions = [];
 
   @override
   void initState() {
     super.initState();
-    notificationFrequencyOptions.addAll(['Wekelijks', 'Dagelijks']);
   }
 
   @override
@@ -55,20 +53,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: theme.colorScheme.primary),
             ),
           ),
-          ToggleSwitchSetting(
-            title: 'Notificaties ontvangen',
-            description: "Meldingen ontvangen wanneer een bedorven is.",
-            isToggled: _receiveNotifications,
-            changeValue: _toggleNotifications,
-          ),
-
-          DropdownSetting(
-            options: notificationFrequencyOptions,
-            selectedOption: 'Wekelijks',
-            title: 'Melding frequency',
-          ),
-          const Divider(),
           NotificationSettings(),
+          ReminderDialogue(),
+          const Divider(),
           // Section: Appearance
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -87,34 +74,6 @@ class _SettingsPageState extends State<SettingsPage> {
             changeValue: _toggleDarkMode,
           ),
           const Divider(),
-
-          // Section: Other
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              'Overige',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary),
-            ),
-          ),
-          ListTile(
-            title: const Text('Licentieovereenkomst'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              // Navigate to license agreement page or show a dialog
-            },
-          ),
-          ListTile(
-            title: const Text('Privacybeleid'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              // Navigate to privacy policy page or show a dialog
-            },
-          ),
-          const Divider(),
-
           // New Section: Delete Database
           ListTile(
             title: const Text(
@@ -130,21 +89,9 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _toggleNotifications(bool value) {
-    setState(() {
-      _receiveNotifications = value;
-    });
-  }
-
   void _toggleDarkMode(bool value) {
     setState(() {
       _darkMode = value;
-    });
-  }
-
-  void _toggleLocationServices(bool value) {
-    setState(() {
-      _locationServices = value;
     });
   }
 

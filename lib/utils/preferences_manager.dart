@@ -22,4 +22,14 @@ class PreferencesManager {
         .map((d) => Duration(milliseconds: int.parse(d)))
         .toList();
   }
+
+  Future<void> saveReceiveNotifications(bool value) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setBool('receiveNotifications', value);
+  }
+
+  Future<bool> loadReceiveNotifications() async {
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.getBool('receiveNotifications') ?? false;
+  }
 }

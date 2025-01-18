@@ -3,17 +3,17 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:freazy/models/item.dart';
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
+class ItemDatabaseHelper {
+  static final ItemDatabaseHelper _instance = ItemDatabaseHelper._internal();
   static Database? _database;
 
   static const _table = "items";
 
-  factory DatabaseHelper() {
+  factory ItemDatabaseHelper() {
     return _instance;
   }
 
-  DatabaseHelper._internal();
+  ItemDatabaseHelper._internal();
 
   Future<Database> get database async {
     if (_database != null) return _database!;

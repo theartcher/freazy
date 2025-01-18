@@ -12,7 +12,7 @@ import 'package:freazy/widgets/frozen_item_fields/weight-unit.dart';
 import 'package:freazy/widgets/frozen_item_fields/weight.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
-import 'package:freazy/utils/db_helper.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:provider/provider.dart';
 
 class EditItemPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class EditItemPage extends StatefulWidget {
 class _EditItemPageState extends State<EditItemPage> {
   final _formKey = GlobalKey<FormState>();
   final _focusHelper = FormFocusHelper();
-  final _dbHelper = DatabaseHelper();
+  final _dbHelper = ItemDatabaseHelper();
 
   late FrozenItemStore store;
   static const spaceBetweenItems = 8.0;

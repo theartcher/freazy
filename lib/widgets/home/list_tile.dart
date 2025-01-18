@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
-import 'package:freazy/utils/db_helper.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
 
 class OverviewListTile extends StatelessWidget {
   final Function fetchItems;
@@ -14,7 +14,7 @@ class OverviewListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseHelper dbHelper = DatabaseHelper();
+    final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
     final theme = Theme.of(context);
 
     return Dismissible(
