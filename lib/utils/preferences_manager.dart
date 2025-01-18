@@ -1,26 +1,39 @@
+import 'dart:convert';
+
+import 'package:freazy/models/reminder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesManager {
-  Future<void> saveDurations(List<Duration> durations) async {
-    final preferences = await SharedPreferences.getInstance();
+  static const String _keyReminders = 'reminders';
 
-    final durationList = durations.map((d) => d.inMilliseconds).toList();
+  /// Save a list of Reminder objects to SharedPreferences
+  static Future<void> saveReminders(List<Reminder> reminders) async {
+    final prefs = await SharedPreferences.getInstance();
 
-    await preferences.setStringList(
-        'durations', durationList.map((d) => d.toString()).toList());
+    // Convert each Reminder to a map, then serialize the list to JSON
+    final String remindersJson =
+        jsonEncode(reminders.map((r) => r.toMap()).toList());
+
+    await prefs.setString(_keyReminders, remindersJson);
   }
 
-  Future<List<Duration>> loadDurations() async {
-    final preferences = await SharedPreferences.getInstance();
-    final durationList = preferences.getStringList('durations');
+  /// Load a list of Reminder objects from SharedPreferences
+  static Future<List<Reminder>> loadReminders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? remindersJson = prefs.getString(_keyReminders);
 
-    if (durationList == null) {
-      return [];
+    if (remindersJson != null) {
+      // Decode the JSON and map each item back to a Reminder object
+      final List<dynamic> reminderList = jsonDecode(remindersJson);
+      return reminderList.map((item) => Reminder.fromMap(item)).toList();
     }
+    return []; // Return an empty list if nothing is stored
+  }
 
-    return durationList
-        .map((d) => Duration(milliseconds: int.parse(d)))
-        .toList();
+  /// Clear the stored reminders
+  static Future<void> clearReminders() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyReminders);
   }
 
   Future<void> saveReceiveNotifications(bool value) async {

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/models/reminder.dart';
-import 'package:freazy/utils/databases/reminder_database_helper.dart';
 
 class ReminderSelector extends StatefulWidget {
-  final int? id;
   final Reminder? initialReminder;
-  final void Function(int id) onDelete;
   final void Function(Reminder reminder) onSave;
+  final void Function(Reminder reminder) onDelete;
 
   const ReminderSelector({
     super.key,
-    required this.id,
-    required this.onDelete,
     required this.onSave,
-    required this.initialReminder,
+    required this.onDelete,
+    this.initialReminder,
   });
 
   @override
@@ -28,19 +25,9 @@ class _ReminderSelectorState extends State<ReminderSelector> {
   @override
   void initState() {
     super.initState();
-
     // Use the initialReminder if provided, otherwise create a new one
     _reminder = widget.initialReminder ??
-        Reminder(
-          id: widget.id,
-          amount: _numberOptions.first, // Default to the first valid value
-          type: ReminderType.day,
-        );
-
-    // Validate the initial amount to ensure it's within the valid range
-    if (!_numberOptions.contains(_reminder.amount)) {
-      _reminder.amount = _numberOptions.first;
-    }
+        Reminder(type: ReminderType.day, amount: _numberOptions.first);
   }
 
   @override
@@ -86,9 +73,7 @@ class _ReminderSelectorState extends State<ReminderSelector> {
           icon: const Icon(Icons.remove),
           color: Colors.red,
           onPressed: () {
-            if (_reminder.id != null) {
-              widget.onDelete(_reminder.id!);
-            }
+            widget.onDelete(_reminder); // Pass the reminder being deleted
           },
         ),
       ],

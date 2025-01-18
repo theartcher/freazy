@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:freazy/models/reminder.dart';
 
-class DialogueSettings extends StatelessWidget {
+class PressableSetting extends StatelessWidget {
   final String title;
   final String? description;
-  final Function openMenu;
+  final Function onPress;
   final IconData? icon;
 
-  const DialogueSettings({
+  const PressableSetting({
     super.key,
     required this.title,
     this.description,
-    required this.openMenu,
+    required this.onPress,
     this.icon,
   });
 
@@ -20,7 +19,7 @@ class DialogueSettings extends StatelessWidget {
     final theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: () => this.openMenu(),
+      onTap: () => onPress(),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(

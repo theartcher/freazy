@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freazy/utils/preferences_manager.dart';
-import 'package:freazy/widgets/settings/menu_setting.dart';
-import 'package:freazy/widgets/settings/reminders.dart';
-import 'package:freazy/widgets/settings/reminders_dialogue.dart';
+import 'package:freazy/widgets/settings/reminders/reminders-settings.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/widgets/settings/toggle_switch_setting.dart';
@@ -53,8 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: theme.colorScheme.primary),
             ),
           ),
-          NotificationSettings(),
-          ReminderDialogue(),
+          const ReminderSettings(),
           const Divider(),
           // Section: Appearance
           Padding(

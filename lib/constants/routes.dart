@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/pages/frozen_item/add-new.dart';
 import 'package:freazy/pages/frozen_item/edit.dart';
+import 'package:freazy/pages/settings/edit-reminders.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
-import 'package:freazy/pages/settings.dart';
+import 'package:freazy/pages/settings/settings.dart';
 import 'package:freazy/pages/home.dart';
 
 final GoRouter router = GoRouter(routes: <RouteBase>[
@@ -18,6 +19,12 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
     path: ROUTE_SETTINGS,
     builder: (BuildContext context, GoRouterState state) {
       return const SettingsPage();
+    },
+  ),
+  GoRoute(
+    path: ROUTE_REMINDERS_EDIT,
+    builder: (BuildContext context, GoRouterState state) {
+      return const EditNotificationsPage();
     },
   ),
   GoRoute(

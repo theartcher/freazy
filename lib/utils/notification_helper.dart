@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:freazy/models/item.dart';
+import 'package:freazy/models/reminder.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/utils/preferences_manager.dart';
 
@@ -16,8 +17,8 @@ class NotificationHelper {
     if (items.isEmpty) return false;
 
     // Get local preferences
-    List<Duration> notificationFrequencies =
-        await PreferencesManager().loadDurations();
+    List<Reminder> notificationFrequencies =
+        await PreferencesManager.loadReminders();
 
     // If there are no notification frequencies, there is no need to check for notifications
     // if (notificationFrequencies.isEmpty) return false;
@@ -25,8 +26,8 @@ class NotificationHelper {
     print('Checking for notifications');
 
     // Get items to notify about
-    List<Item> itemsToNotifyAbout =
-        _getItemsToNotify(items, notificationFrequencies);
+    List<Item> itemsToNotifyAbout = [];
+    // _getItemsToNotify(items, notificationFrequencies);
 
     print("Items checked");
 

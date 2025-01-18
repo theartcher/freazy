@@ -38,10 +38,10 @@ void main() async {
     isInDebugMode: true,
   );
 
-  Workmanager().registerOneOffTask(
-    "check-for-notifications",
-    "notificationCheck",
-  );
+  // Workmanager().registerOneOffTask(
+  //   "check-for-notifications",
+  //   "notificationCheck",
+  // );
 
   // Workmanager().registerPeriodicTask(
   //   "check-for-notifications",
