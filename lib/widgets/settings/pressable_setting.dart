@@ -1,56 +1,49 @@
 import 'package:flutter/material.dart';
 
-class PressableSetting extends StatelessWidget {
+class PressableSettingTile extends StatelessWidget {
   final String title;
   final String? description;
-  final Function onPress;
   final IconData? icon;
+  final Color? color;
+  final Function onPress;
 
-  const PressableSetting({
+  const PressableSettingTile({
     super.key,
     required this.title,
     this.description,
-    required this.onPress,
     this.icon,
+    required this.onPress,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return GestureDetector(
+    return ListTile(
       onTap: () => onPress(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                  if (description != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Text(
-                        description!,
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                ],
-              ),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: color ?? Theme.of(context).textTheme.bodyLarge?.color,
             ),
-            if (icon != null)
-              Icon(
-                icon,
-                size: 24,
-              )
-          ],
-        ),
       ),
+      subtitle: description != null
+          ? Text(
+              description!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color:
+                        color ?? Theme.of(context).textTheme.bodySmall?.color,
+                  ),
+            )
+          : null,
+      trailing: icon != null
+          ? Icon(
+              icon,
+              size: 24,
+              color: color,
+            )
+          : null,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      minVerticalPadding: 0,
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:freazy/models/item-autocomplete-suggestions.dart';
 import 'package:freazy/stores/item-store.dart';
-import 'package:freazy/utils/form_focus_helper.dart';
+import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/widgets/frozen_item_fields/category.dart';
 import 'package:freazy/widgets/frozen_item_fields/expiration-date.dart';
 import 'package:freazy/widgets/frozen_item_fields/freeze-date.dart';

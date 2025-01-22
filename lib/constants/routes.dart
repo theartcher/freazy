@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/pages/frozen_item/add-new.dart';
 import 'package:freazy/pages/frozen_item/edit.dart';
-import 'package:freazy/pages/settings/edit-reminders.dart';
+import 'package:freazy/pages/settings/edit_reminders.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';

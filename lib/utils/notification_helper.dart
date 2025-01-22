@@ -33,6 +33,8 @@ class NotificationHelper {
     String notificationString = _formatNotificationString(itemsToNotifyAbout);
 
     //TODO: Define a proper channel for this
+    print(
+        "Sending notification, scheduling time was ${(await PreferencesManager.loadReminderTime()).toString()}");
     AwesomeNotifications().createNotification(
         content: NotificationContent(
       id: 10,
