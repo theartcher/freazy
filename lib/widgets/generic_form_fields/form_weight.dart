@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:freazy/utils/form_validation_helper.dart';
+import 'package:freazy/utils/forms/form_validation_helper.dart';
 
 class WeightInput extends StatefulWidget {
   final FocusNode focusNode;

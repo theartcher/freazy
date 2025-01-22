@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:freazy/utils/notification_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/models/sort_type.dart';
-import 'package:freazy/utils/db_helper.dart';
-import 'package:freazy/utils/search_helper.dart';
-import 'package:freazy/utils/sorting_helper.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
+import 'package:freazy/utils/home/search_helper.dart';
+import 'package:freazy/utils/home/sorting_helper.dart';
 import 'package:freazy/widgets/home/list_tile.dart';
 import 'package:freazy/widgets/sort_items.dart';
 
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final ItemDatabaseHelper _dbHelper = ItemDatabaseHelper();
   final title = 'Freazy';
 
   SortType _selectedSorting = SortType.toExpire;
@@ -77,6 +78,11 @@ class _HomePageState extends State<HomePage> {
           title: Text(title),
           actions: [
             IconButton(
+              icon: const Icon(Icons.dangerous),
+              onPressed: () => NotificationHelper().sendNotifications(),
+              color: Colors.red,
+            ),
+            IconButton(
               icon: const Icon(Icons.add),
               onPressed: () async {
                 final result = await context.push(ROUTE_ITEM_ADD);
@@ -96,16 +102,6 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(
               children: [
-                IconButton(
-                    icon: Icon(_searchQuery != '' ? Icons.close : Icons.search),
-                    onPressed: () {
-                      if (_searchQuery == '') return;
-                      setState(() {
-                        _searchController.clear();
-                        _searchQuery = '';
-                        _fetchItems();
-                      });
-                    }),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -116,9 +112,22 @@ class _HomePageState extends State<HomePage> {
                       },
                       onTapOutside: (PointerDownEvent? event) =>
                           FocusScope.of(context).unfocus(),
-                      decoration: const InputDecoration(
-                          hintText: 'Zoeken...',
-                          border: UnderlineInputBorder()),
+                      decoration: InputDecoration(
+                        hintText: 'Zoeken...',
+                        border: const UnderlineInputBorder(),
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: () {
+                                  setState(() {
+                                    _searchController.clear();
+                                    _searchQuery = '';
+                                    _fetchItems();
+                                  });
+                                })
+                            : null,
+                      ),
                     ),
                   ),
                 ),

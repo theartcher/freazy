@@ -84,7 +84,7 @@ class FrozenItemStore with ChangeNotifier {
     notifyListeners();
   }
 
-  void setWeight(num weightUnit) {
+  void setWeight(num weight) {
     _weight = weight;
     notifyListeners();
   }
@@ -100,7 +100,7 @@ class FrozenItemStore with ChangeNotifier {
   }
 
   void setExpirationDate(DateTime expirationDate) {
-    _freezeDate = expirationDate;
+    _expirationDate = expirationDate;
     notifyListeners();
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:freazy/models/item-autocomplete-suggestions.dart';
 import 'package:freazy/stores/item-store.dart';
-import 'package:freazy/utils/form_focus_helper.dart';
+import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/widgets/frozen_item_fields/category.dart';
 import 'package:freazy/widgets/frozen_item_fields/expiration-date.dart';
 import 'package:freazy/widgets/frozen_item_fields/freeze-date.dart';
@@ -12,7 +12,7 @@ import 'package:freazy/widgets/frozen_item_fields/weight-unit.dart';
 import 'package:freazy/widgets/frozen_item_fields/weight.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
-import 'package:freazy/utils/db_helper.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:provider/provider.dart';
 
 class AddItemPage extends StatefulWidget {
@@ -25,7 +25,7 @@ class AddItemPage extends StatefulWidget {
 class _AddItemPageState extends State<AddItemPage> {
   final _formKey = GlobalKey<FormState>();
   final _focusHelper = FormFocusHelper();
-  final _dbHelper = DatabaseHelper();
+  final _dbHelper = ItemDatabaseHelper();
 
   late FrozenItemStore store;
   static const spaceBetweenItems = 8.0;

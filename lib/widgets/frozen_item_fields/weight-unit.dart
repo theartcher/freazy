@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/models/item-autocomplete-suggestions.dart';
 import 'package:freazy/stores/item-store.dart';
-import 'package:freazy/utils/form_focus_helper.dart';
-import 'package:freazy/utils/form_validation_helper.dart';
+import 'package:freazy/utils/forms/form_focus_helper.dart';
+import 'package:freazy/utils/forms/form_validation_helper.dart';
 import 'package:freazy/widgets/generic_form_fields/form_weightUnit.dart';
 import 'package:provider/provider.dart';
 
