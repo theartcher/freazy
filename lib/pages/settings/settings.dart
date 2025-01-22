@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/widgets/settings/reminders/reminders-settings.dart';
+import 'package:freazy/widgets/settings/reset_app.dart';
 import 'package:go_router/go_router.dart';
-import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/widgets/settings/toggle_switch_setting.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -12,8 +12,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final ItemDatabaseHelper _dbHelper = ItemDatabaseHelper();
-
   bool _darkMode = false;
 
   @override
@@ -37,11 +35,10 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
         children: [
           // Section: Notifications
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
             child: Text(
               'Meldingen',
               style: TextStyle(
@@ -54,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
           const Divider(),
           // Section: Appearance
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
             child: Text(
               'Uiterlijk',
               style: TextStyle(
@@ -70,16 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
             changeValue: _toggleDarkMode,
           ),
           const Divider(),
-          // New Section: Delete Database
-          ListTile(
-            title: const Text(
-              'Verwijder database',
-              style: TextStyle(
-                  color: Colors.red), // Optional styling to indicate caution
-            ),
-            trailing: const Icon(Icons.delete, color: Colors.red),
-            onTap: _showDeleteConfirmationDialog,
-          ),
+          const ResetAppSetting(),
         ],
       ),
     );
@@ -89,40 +77,5 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _darkMode = value;
     });
-  }
-
-  // Function to show the confirmation dialog
-  void _showDeleteConfirmationDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Bevestig verwijdering'),
-          content: const Text(
-              'Weet u zeker dat u de database wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Annuleren'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Verwijderen',
-                  style: TextStyle(color: Colors.red)),
-              onPressed: () async {
-                await _deleteDatabase();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Function to handle the actual database deletion
-  Future<void> _deleteDatabase() async {
-    await _dbHelper.deleteAndRecreateDatabase();
   }
 }

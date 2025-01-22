@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/models/reminder.dart';
+import 'package:freazy/utils/settings/preferences_manager.dart';
+import 'package:freazy/utils/settings/reminder_validator.dart';
 import 'package:freazy/widgets/settings/reminders/reminder_selector.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,11 +14,13 @@ class EditNotificationsPage extends StatefulWidget {
 
 class _EditNotificationsPageState extends State<EditNotificationsPage> {
   final _formKey = GlobalKey<FormState>();
+  final _maxAmountOfReminders = 15;
   bool _isLoading = false;
   List<Reminder> _reminders = [];
+  String? _validationError;
 
   void _addReminder() {
-    if (_reminders.length >= 5) {
+    if (_reminders.length >= _maxAmountOfReminders) {
       return;
     }
 
@@ -31,17 +35,63 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
     });
   }
 
+  void _saveReminder(Reminder reminder) {
+    // Check if reminder with the same amount and type already exists
+    bool isDuplicate = _reminders.any((existingReminder) =>
+        existingReminder.amount == reminder.amount &&
+        existingReminder.type == reminder.type);
+
+    if (isDuplicate) {
+      setState(() {
+        _validationError = ReminderValidator.validate(_reminders);
+      });
+      return;
+    }
+
+    // Proceed to save the reminder if it's unique
+    setState(() {
+      _validationError =
+          null; // Clear error message if validation is successful
+      final index = _reminders.indexOf(reminder);
+      if (index != -1) {
+        _reminders[index] = reminder;
+      } else {
+        _reminders.add(reminder);
+      }
+    });
+  }
+
   Future<void> exitWithSaving() async {
+    // Run validation when the "Save" button is pressed
+    var errorText = ReminderValidator.validate(_reminders);
+
+    if (errorText != null) {
+      setState(() {
+        _validationError = errorText;
+      });
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
-    // Implement loading, check states before saving.
-    await Future.delayed(const Duration(seconds: 2));
+    await PreferencesManager.saveReminders(_reminders);
+    context.pop();
+  }
+
+  Future<void> _initialize() async {
+    var existingReminders = await PreferencesManager.loadReminders();
 
     setState(() {
-      _isLoading = false;
+      _reminders = existingReminders;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
   }
 
   @override
@@ -94,29 +144,38 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.add),
-                        onPressed: _reminders.length >= 5 ? null : _addReminder,
+                        onPressed: _reminders.length >= _maxAmountOfReminders
+                            ? null
+                            : _addReminder,
                         color: theme.colorScheme.primary,
                       ),
                     ],
                   ),
                   _reminders.isEmpty
-                      ? const Text("Geen meldingen opgeslagen")
+                      ? const Text("U heeft geen actieve meldingen.")
                       : const SizedBox.shrink(),
                   ..._reminders.map((reminder) {
                     return ReminderSelector(
                       key: ValueKey(reminder),
                       initialReminder: reminder,
-                      onSave: (reminder) {
-                        setState(() {
-                          final index = _reminders.indexOf(reminder);
-                          if (index != -1) {
-                            _reminders[index] = reminder;
-                          }
-                        });
-                      },
+                      onSave: _saveReminder,
                       onDelete: _deleteReminder,
                     );
                   }),
+                  //TODO: Add this to the top, reserve the space. Or alternatively: Create a custom snackbar widget.
+                  // Add validation error message at the bottom of the form.
+                  if (_validationError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        _validationError!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

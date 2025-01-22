@@ -25,7 +25,6 @@ class _ReminderSelectorState extends State<ReminderSelector> {
   @override
   void initState() {
     super.initState();
-    // Use the initialReminder if provided, otherwise create a new one
     _reminder = widget.initialReminder ??
         Reminder(type: ReminderType.day, amount: _numberOptions.first);
   }
@@ -47,7 +46,9 @@ class _ReminderSelectorState extends State<ReminderSelector> {
           onChanged: (value) {
             setState(() {
               _reminder.amount = value!;
-              widget.onSave(_reminder); // Save changes
+              widget.onSave(
+                _reminder,
+              );
             });
           },
         ),
@@ -63,7 +64,7 @@ class _ReminderSelectorState extends State<ReminderSelector> {
           onChanged: (value) {
             setState(() {
               _reminder.type = value!;
-              widget.onSave(_reminder); // Save changes
+              widget.onSave(_reminder);
             });
           },
         ),
@@ -73,7 +74,7 @@ class _ReminderSelectorState extends State<ReminderSelector> {
           icon: const Icon(Icons.remove),
           color: Colors.red,
           onPressed: () {
-            widget.onDelete(_reminder); // Pass the reminder being deleted
+            widget.onDelete(_reminder);
           },
         ),
       ],
