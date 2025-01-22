@@ -14,12 +14,6 @@ class BackgroundManager {
     TimeOfDay executionTime = await PreferencesManager.loadReminderTime();
     Duration delayToExecutionTime = _delayScheduleToTime(executionTime);
 
-    print("""Scheduled task $_reminderBackgroundTaskKey 
-        @ ${executionTime.toString()}, 
-        initial delay is ${delayToExecutionTime.inMinutes} minutes &
-        policy is ${policyOnExistingSchedule}
-        """);
-
     await Workmanager().registerPeriodicTask(
       _reminderBackgroundTaskKey,
       reminderBackgroundTaskName,
