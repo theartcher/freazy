@@ -40,7 +40,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
           title: 'Herineringen beheren',
           description: 'Configureer wanneer u herinneringen ontvangt.',
           onPress: () => context.push(ROUTE_REMINDERS_EDIT),
-          icon: Icons.notifications,
+          trailing: Icon(Icons.notifications),
         ),
         //Separate widget since ]PressableSettingTile] does not yet implement [Widget?] instead of icon.
         ListTile(

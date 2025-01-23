@@ -8,6 +8,8 @@ class PreferencesManager {
   static const String _remindersKey = 'reminders';
   static const String _notificationKey = 'receiveNotifications';
   static const String _remindersTimeKey = 'remindersTime';
+  static const String _themeModeKey = 'themeMode';
+  static const String _localeKey = 'locale';
 
   static Future<void> saveReminderTime(TimeOfDay reminderTime) async {
     final userPreferences = await SharedPreferences.getInstance();
@@ -58,6 +60,59 @@ class PreferencesManager {
   static Future<bool> loadReceiveNotifications() async {
     final userPreferences = await SharedPreferences.getInstance();
     return userPreferences.getBool(_notificationKey) ?? false;
+  }
+
+  static Future<void> saveThemeMode(ThemeMode themeMode) async {
+    final userPreferences = await SharedPreferences.getInstance();
+    String selectedTheme = "system";
+
+    switch (themeMode) {
+      case (ThemeMode.dark):
+        selectedTheme = "dark";
+        break;
+      case (ThemeMode.light):
+        selectedTheme = "light";
+        break;
+      default:
+        selectedTheme = "system";
+        break;
+    }
+
+    await userPreferences.setString(_themeModeKey, selectedTheme);
+  }
+
+  static Future<ThemeMode> loadThemeMode() async {
+    final userPreferences = await SharedPreferences.getInstance();
+    String unparsedTheme = userPreferences.getString(_themeModeKey) ?? "";
+    ThemeMode selectedTheme = ThemeMode.system;
+
+    switch (unparsedTheme) {
+      case ("dark"):
+        selectedTheme = ThemeMode.dark;
+        break;
+      case ("light"):
+        selectedTheme = ThemeMode.light;
+        break;
+      default:
+        selectedTheme = ThemeMode.system;
+        break;
+    }
+
+    return selectedTheme;
+  }
+
+  static Future<void> setLocale(Locale locale) async {
+    final userPreferences = await SharedPreferences.getInstance();
+    await userPreferences.setString(_localeKey, locale.toLanguageTag());
+  }
+
+  static Future<Locale> loadLocale() async {
+    final userPreferences = await SharedPreferences.getInstance();
+    String selectedLanguageTag = userPreferences.getString(_localeKey) ?? 'en';
+    Locale selectedLocale = Locale.fromSubtags(
+      languageCode: selectedLanguageTag,
+    );
+    return selectedLocale;
   }
 
   static Future<bool> clearAll() async {

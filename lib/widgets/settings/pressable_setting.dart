@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 class PressableSettingTile extends StatelessWidget {
   final String title;
   final String? description;
-  final IconData? icon;
+  final Widget? trailing;
   final Color? color;
-  final Function onPress;
+  final Function? onPress;
 
   const PressableSettingTile({
     super.key,
     required this.title,
     this.description,
-    this.icon,
-    required this.onPress,
+    this.trailing,
+    this.onPress,
     this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => onPress(),
+      onTap: onPress != null ? () => onPress!() : null,
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -35,13 +35,7 @@ class PressableSettingTile extends StatelessWidget {
                   ),
             )
           : null,
-      trailing: icon != null
-          ? Icon(
-              icon,
-              size: 24,
-              color: color,
-            )
-          : null,
+      trailing: trailing,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       minVerticalPadding: 0,
     );

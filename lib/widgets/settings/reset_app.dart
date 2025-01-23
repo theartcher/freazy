@@ -89,7 +89,10 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
       title: 'Reset app',
       onPress: showDeleteConfirmationDialog,
       color: Colors.red,
-      icon: Icons.delete,
+      trailing: const Icon(
+        Icons.delete,
+        color: Colors.red,
+      ),
     );
   }
 }
