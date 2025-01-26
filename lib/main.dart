@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:freazy/constants/routes.dart';
 import 'package:freazy/constants/themes.dart';
 import 'package:freazy/stores/item-store.dart';
@@ -88,6 +89,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      locale: selectedLocale,
       themeMode: selectedTheme,
       theme: lightMode,
       darkTheme: darkMode,
@@ -95,6 +97,9 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('en'), // English
@@ -113,7 +118,5 @@ class _MainAppState extends State<MainApp> {
     setState(() {
       selectedLocale = locale;
     });
-
-    print(locale);
   }
 }

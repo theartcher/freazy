@@ -1,4 +1,78 @@
 {
   "@@locale": "nl",
-  "helloWorld": "Hallo wereld!"
+  "homePageSection": "",
+  "@homePageSection": {
+    "description": "No content, this key is only a divider in the .arb file."
+  },
+  "homePage_header_appTitle": "Freazy",
+  "@homePage_header_appTitle": {
+    "description": "The title of the app in the header bar."
+  },
+  "homePage_searchBar_searching": "Zoeken...",
+  "@homePage_searchBar_searching": {
+    "description": "The search bar when no input has been given."
+  },
+  "homePage_items_noItemsFound": "Geen producten gevonden.",
+  "@homePage_items_noItemsFound": {
+    "description": "The text shown in the home page when no items are found after loading has finished."
+  },
+  "homePage_searchBar_sortItemsAlphabetically": "Alfabetish",
+  "@homePage_searchBar_sortItemsAlphabetically": {
+    "description": "The sort by alphabetical sorting option."
+  },
+  "homePage_searchBar_sortToExpireFirst": "Houdsbaarheidsdatum",
+  "@homePage_searchBar_sortToExpireFirst": {
+    "description": "The sort by expiration date option."
+  },
+  "homePage_searchBar_sortCategoryAlphabetically": "Categorieën",
+  "@homePage_searchBar_sortCategoryAlphabetically": {
+    "description": "The sort by categories option."
+  },
+  "homePage_searchBar_sortFreezerAlphabetically": "Vriezers",
+  "@homePage_searchBar_sortFreezerAlphabetically": {
+    "description": "The sort by freezer option."
+  },
+  "homePage_item_deletedItem": "{item} verwijderd.",
+  "@homePage_item_deletedItem": {
+    "description": "The notification shown after deleting an item.",
+    "placeholders": {
+      "item": {
+        "type": "String"
+      }
+    }
+  },
+  "homePage_item_undoDeleteItem": "Ongedaan",
+  "@homePage_item_undoDeleteItem": {
+    "description": "The text shown to undo the last deletion of an item."
+  },
+  "homePage_item_description": "Houdbaarheidsdatum: {date}\nLocatie: {freezer}\nCategorie: {category}",
+  "@homePage_item_description": {
+    "description": "The description of a item's tile.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "freezer": {
+        "type": "String"
+      },
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "homePage_item_header": "{title} ({weight}{weightUnit})",
+  "@homePage_item_header": {
+    "description": "The header of an item's tile",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "weight": {
+        "type": "num"
+      },
+      "weightUnit": {
+        "type": "String"
+      }
+    }
+  }
 }
