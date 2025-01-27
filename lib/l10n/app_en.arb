@@ -74,5 +74,73 @@
         "type": "String"
       }
     }
+  },
+  "settingsPageSection": "",
+  "@settingsPageSection": {
+    "description": "No content, this key is only a divider in the .arb file."
+  },
+  "settingsPage_header_title": "Settings",
+  "@settingsPage_header_title": {
+    "description": "The title of the page."
+  },
+  "settingsPage_remindersSection_header": "Notifications & Reminders",
+  "@settingsPage_remindersSection_header": {
+    "description": "The title of the reminders section."
+  },
+  "settingsPage_remindersSection_notificationTitle": "Receive notifications",
+  "@settingsPage_remindersSection_notificationTitle": {
+    "description": "Title of the checkbox to toggle notifications."
+  },
+  "settingsPage_remindersSection_notificationDescription": "Get notifications when products are about to expire.",
+  "@settingsPage_remindersSection_notificationDescription": {
+    "description": "Description of the checkbox to toggle notifications."
+  },
+  "settingsPage_remindersSection_remindersTitle": "Manage reminders",
+  "@settingsPage_remindersSection_remindersTitle": {
+    "description": "text"
+  },
+  "settingsPage_remindersSection_remindersDescription": "Configure when you'll receive notifications.",
+  "@settingsPage_remindersSection_remindersDescription": {
+    "description": "text"
+  },
+  "settingsPage_remindersSection_reminderTimeTitle": "Select preferred time",
+  "@settingsPage_remindersSection_reminderTimeTitle": {
+    "description": "text"
+  },
+  "settingsPage_remindersSection_reminderTimeDescription": "Choose the time you prefer to receive your reminders.",
+  "@settingsPage_remindersSection_reminderTimeDescription": {
+    "description": "text"
+  },
+  "settingsPage_personalizationSection_header": "Personalization",
+  "@settingsPage_personalizationSection_header": {
+    "description": "The title of the personalization sections."
+  },
+  "settingsPage_personalizationSection_themeTitle": "Select a theme",
+  "@settingsPage_personalizationSection_themeTitle": {
+    "description": "text"
+  },
+  "settingsPage_personalizationSection_themeDescription": "Change the app's appearance",
+  "@settingsPage_personalizationSection_themeDescription": {
+    "description": "text"
+  },
+  "settingsPage_personalizationSection_themeLight": "Light",
+  "@settingsPage_personalizationSection_themeLight": {
+    "description": "text"
+  },
+  "settingsPage_personalizationSection_themeDark": "Dark",
+  "@settingsPage_personalizationSection_themeDark": {
+    "description": "text"
+  },
+  "settingsPage_personalizationSection_themeSystem": "System",
+  "@settingsPage_personalizationSection_themeSystem": {
+    "description": "text"
+  },
+  "generic_cancel": "Cancel",
+  "@generic_cancel": {
+    "description": "Generic cancel text on pop-ups and menus"
+  },
+  "generic_confirm": "Confirm",
+  "@generic_confirm": {
+    "description": "Generic confirmation text on pop-ups and menus"
   }
 }
