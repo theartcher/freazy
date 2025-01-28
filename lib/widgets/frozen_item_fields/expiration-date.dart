@@ -4,6 +4,7 @@ import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/utils/forms/form_validation_helper.dart';
 import 'package:freazy/widgets/generic_form_fields/form_date.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemExpirationDate extends StatefulWidget {
   final FormFocusHelper focusHelper;
@@ -20,6 +21,7 @@ class _ItemExpirationDateState extends State<ItemExpirationDate> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return DateInput(
         focusNode: widget.focusHelper.expirationDateFocusNode,
@@ -32,7 +34,7 @@ class _ItemExpirationDateState extends State<ItemExpirationDate> {
             _validationHelper.validateExpirationDate(value),
         firstDate: DateUtils.dateOnly(DateTime.now()),
         lastDate: DateTime.now().add(const Duration(days: 365)),
-        label: 'Houdbaarheidsdatum',
+        label: localization.itemConfig_generic_expirationDateTitle,
         icon: Icons.running_with_errors,
         initialDate: store.expirationDate);
   }

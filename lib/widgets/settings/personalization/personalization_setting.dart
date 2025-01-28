@@ -33,27 +33,26 @@ class _PersonalizationSettingState extends State<PersonalizationSetting> {
 
   void selectTheme(ThemeMode selectedTheme) {
     PreferencesManager.saveThemeMode(selectedTheme);
+    MainApp.of(context).changeTheme(selectedTheme);
 
     setState(() {
       theme = selectedTheme;
     });
-
-    MainApp.of(context).changeTheme(selectedTheme);
   }
 
-  void selectLocale(Locale locale) {
-    PreferencesManager.setLocale(locale);
+  void selectLocale(Locale selectedLocale) {
+    PreferencesManager.setLocale(selectedLocale);
+    MainApp.of(context).changeLocale(selectedLocale);
 
     setState(() {
-      locale = locale;
+      locale = selectedLocale;
     });
-
-    MainApp.of(context).changeLocale(locale);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: UniqueKey(),
       children: [
         ThemeSelector(
           selectTheme: selectTheme,

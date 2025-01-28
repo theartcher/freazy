@@ -4,6 +4,7 @@ import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/utils/forms/form_validation_helper.dart';
 import 'package:freazy/widgets/generic_form_fields/form_date.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemFreezeDate extends StatefulWidget {
   final FormFocusHelper focusHelper;
@@ -20,6 +21,7 @@ class _ItemFreezeDateState extends State<ItemFreezeDate> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return DateInput(
       focusNode: widget.focusHelper.freezeDateFocusNode,
@@ -31,7 +33,7 @@ class _ItemFreezeDateState extends State<ItemFreezeDate> {
       validateForm: (value) => _validationHelper.validateFreezeDate(value),
       firstDate: DateTime(DateTime.now().year),
       lastDate: DateTime.now(),
-      label: 'Invriesdatum',
+      label: localization.itemConfig_generic_freezeDateTitle,
       icon: Icons.ac_unit,
       initialDate: store.freezeDate,
     );

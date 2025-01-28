@@ -5,9 +5,8 @@ import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/utils/forms/form_validation_helper.dart';
 import 'package:freazy/widgets/generic_form_fields/form_text_suggestions.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-//TODO better label
-//TODO translations
 class ItemTitle extends StatefulWidget {
   final ItemAutoCompleteSuggestions suggestions;
   final FormFocusHelper focusHelper;
@@ -25,6 +24,7 @@ class _ItemTitleState extends State<ItemTitle> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return InputWithSuggestions(
       focusNode: widget.focusHelper.titleFocusNode,
@@ -37,7 +37,7 @@ class _ItemTitleState extends State<ItemTitle> {
       selectedItem: store.title,
       validateForm: (value) => _validationHelper.validateTitle(value),
       setFocusNode: widget.focusHelper.setTitleFocusNode,
-      label: 'Product',
+      label: localization.itemConfig_generic_productTitle,
       icon: Icons.title,
       autoFocus: true,
     );

@@ -65,7 +65,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
           changeValue: _toggleNotifications,
         ),
         PressableSettingTile(
-          title: localization.settingsPage_remindersSection_reminderTimeTitle,
+          title: localization.settingsPage_remindersSection_remindersTitle,
           description:
               localization.settingsPage_remindersSection_remindersDescription,
           onPress: () => context.push(ROUTE_REMINDERS_EDIT),

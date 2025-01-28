@@ -4,6 +4,7 @@ import 'package:freazy/utils/settings/preferences_manager.dart';
 import 'package:freazy/utils/settings/reminder_validator.dart';
 import 'package:freazy/widgets/settings/reminders/reminder_selector.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditNotificationsPage extends StatefulWidget {
   const EditNotificationsPage({super.key});
@@ -97,6 +98,7 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -106,7 +108,7 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text("Meldingen configureren"),
+        title: Text(localization.configureRemindersPage_header_title),
         actions: [
           _isLoading
               ? Container(
@@ -134,7 +136,7 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          "Melding toevoegen",
+                          localization.configureRemindersPage_section_title,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -152,7 +154,10 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
                     ],
                   ),
                   _reminders.isEmpty
-                      ? const Text("U heeft geen actieve meldingen.")
+                      ? Text(
+                          localization
+                              .configureRemindersPage_reminder_noActiveReminders,
+                        )
                       : const SizedBox.shrink(),
                   ..._reminders.map((reminder) {
                     return ReminderSelector(
