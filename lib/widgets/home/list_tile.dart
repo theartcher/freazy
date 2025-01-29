@@ -19,31 +19,30 @@ class OverviewListTile extends StatelessWidget {
     final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
+    final paddingEdges = 18.0;
 
     return Dismissible(
       key: Key(item.id.toString()),
       background: Container(
         color: theme.colorScheme.primary,
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: paddingEdges),
         child: const Icon(Icons.edit, color: Colors.white),
       ),
       secondaryBackground: Container(
         color: theme.colorScheme.error,
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: paddingEdges),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
-      direction:
-          DismissDirection.horizontal, // Enable swiping both left and right
+      direction: DismissDirection.horizontal,
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          // Swipe to edit
           final result = await context.push(ROUTE_ITEM_EDIT, extra: item);
           if (result == true) {
             await fetchItems();
           }
-          return false; // Prevent Dismissible from removing the widget
+          return false;
         } else if (direction == DismissDirection.endToStart) {
           return true;
         }
@@ -77,15 +76,25 @@ class OverviewListTile extends StatelessWidget {
         }
       },
       child: ListTile(
-        tileColor: DateTime.now().isBefore(item.expirationDate)
-            ? Colors.transparent
-            : Colors.red[100],
-        title: Text(
-          localization.homePage_item_header(
-            item.title,
-            item.weight,
-            item.weightUnit,
-          ),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localization.homePage_item_header(
+                item.title,
+                item.weight,
+                item.weightUnit,
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            if (DateTime.now().isAfter(item.expirationDate))
+              Text(
+                localization.homePage_item_expiredAttribute,
+                style: TextStyle(color: theme.colorScheme.error),
+              )
+          ],
         ),
         subtitle: Text(
           localization.homePage_item_description(

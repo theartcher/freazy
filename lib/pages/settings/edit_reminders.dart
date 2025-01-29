@@ -175,8 +175,8 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
                       child: Text(
                         textAlign: TextAlign.center,
                         _validationError!,
-                        style: const TextStyle(
-                          color: Colors.red,
+                        style: TextStyle(
+                          color: theme.colorScheme.error,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -18,6 +18,7 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     void showDeleteConfirmationDialog() {
       showDialog(
@@ -96,10 +97,10 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
     return PressableSettingTile(
       title: localization.settingsPage_resetApp_resetAppTitle,
       onPress: showDeleteConfirmationDialog,
-      color: Colors.red,
-      trailing: const Icon(
+      color: theme.colorScheme.error,
+      trailing: Icon(
         Icons.delete,
-        color: Colors.red,
+        color: theme.colorScheme.error,
       ),
     );
   }

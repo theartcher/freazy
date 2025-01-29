@@ -35,6 +35,7 @@ class _ReminderSelectorState extends State<ReminderSelector> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     return Row(
       children: [
@@ -87,7 +88,7 @@ class _ReminderSelectorState extends State<ReminderSelector> {
         ),
         IconButton(
           icon: const Icon(Icons.remove),
-          color: Colors.red,
+          color: theme.colorScheme.error,
           onPressed: () {
             widget.onDelete(_reminder);
           },

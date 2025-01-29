@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+const appPrimary = Color(0XFF1f00ff);
+
 final darkMode = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color(0XFF1f00ff),
+    seedColor: appPrimary,
     brightness: Brightness.dark,
   ),
 );
@@ -11,7 +13,7 @@ final darkMode = ThemeData(
 final lightMode = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color(0XFF1f00ff),
+    seedColor: appPrimary,
     brightness: Brightness.light,
   ),
 );
