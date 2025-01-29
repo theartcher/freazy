@@ -8,8 +8,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemFreezeDate extends StatefulWidget {
   final FormFocusHelper focusHelper;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
 
-  const ItemFreezeDate({super.key, required this.focusHelper});
+  const ItemFreezeDate({
+    super.key,
+    required this.focusHelper,
+    this.firstDate,
+    this.lastDate,
+  });
 
   @override
   State<ItemFreezeDate> createState() => _ItemFreezeDateState();
@@ -17,6 +24,7 @@ class ItemFreezeDate extends StatefulWidget {
 
 class _ItemFreezeDateState extends State<ItemFreezeDate> {
   final _validationHelper = FormValidationHelper();
+  static const int fiveYearsInDays = 1825;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +39,11 @@ class _ItemFreezeDateState extends State<ItemFreezeDate> {
           widget.focusHelper.expirationDateFocusNode,
           context),
       validateForm: (value) => _validationHelper.validateFreezeDate(value),
-      firstDate: DateTime(DateTime.now().year),
-      lastDate: DateTime.now(),
+      firstDate: widget.firstDate ??
+          DateTime.now().subtract(
+            const Duration(days: fiveYearsInDays),
+          ),
+      lastDate: widget.lastDate ?? DateTime.now(),
       label: localization.itemConfig_generic_freezeDateTitle,
       icon: Icons.ac_unit,
       initialDate: store.freezeDate,

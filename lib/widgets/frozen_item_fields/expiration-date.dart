@@ -8,8 +8,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemExpirationDate extends StatefulWidget {
   final FormFocusHelper focusHelper;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
 
-  const ItemExpirationDate({super.key, required this.focusHelper});
+  const ItemExpirationDate({
+    super.key,
+    required this.focusHelper,
+    this.firstDate,
+    this.lastDate,
+  });
 
   @override
   State<ItemExpirationDate> createState() => _ItemExpirationDateState();
@@ -17,6 +24,7 @@ class ItemExpirationDate extends StatefulWidget {
 
 class _ItemExpirationDateState extends State<ItemExpirationDate> {
   final _validationHelper = FormValidationHelper();
+  static const int fiveYearsInDays = 1825;
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +32,24 @@ class _ItemExpirationDateState extends State<ItemExpirationDate> {
     final localization = AppLocalizations.of(context)!;
 
     return DateInput(
-        focusNode: widget.focusHelper.expirationDateFocusNode,
-        selectDate: (value) => store.setExpirationDate(value),
-        shiftFocus: () => widget.focusHelper.nextFocus(
-            widget.focusHelper.expirationDateFocusNode,
-            widget.focusHelper.sendFormFocusNode,
-            context),
-        validateForm: (value) =>
-            _validationHelper.validateExpirationDate(value),
-        firstDate: DateUtils.dateOnly(DateTime.now()),
-        lastDate: DateTime.now().add(const Duration(days: 365)),
-        label: localization.itemConfig_generic_expirationDateTitle,
-        icon: Icons.running_with_errors,
-        initialDate: store.expirationDate);
+      focusNode: widget.focusHelper.expirationDateFocusNode,
+      selectDate: (value) => store.setExpirationDate(value),
+      shiftFocus: () => widget.focusHelper.nextFocus(
+          widget.focusHelper.expirationDateFocusNode,
+          widget.focusHelper.sendFormFocusNode,
+          context),
+      validateForm: (value) => _validationHelper.validateExpirationDate(value),
+      firstDate: widget.firstDate ??
+          DateUtils.dateOnly(
+            DateTime.now(),
+          ),
+      lastDate: widget.lastDate ??
+          DateTime.now().add(
+            const Duration(days: fiveYearsInDays),
+          ),
+      label: localization.itemConfig_generic_expirationDateTitle,
+      icon: Icons.running_with_errors,
+      initialDate: store.expirationDate,
+    );
   }
 }
