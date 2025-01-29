@@ -75,6 +75,10 @@
       }
     }
   },
+  "homePage_item_expiredAttribute": "[OVER DATUM]",
+  "@homePage_item_expiredAttribute": {
+    "description": "The attribute attached to a tile which has passed it's expiration date."
+  },
   "settingsPageSection": "",
   "@settingsPageSection": {
     "description": "No content, this key is only a divider in the .arb file."

@@ -32,6 +32,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
   late FrozenItemStore store;
   static const spaceBetweenItems = 8.0;
+  static const int fiveYearsInDays = 1825;
   late Future<void> _initializeFuture;
 
   ItemAutoCompleteSuggestions suggestions = ItemAutoCompleteSuggestions.empty();
@@ -166,9 +167,21 @@ class _EditItemPageState extends State<EditItemPage> {
                     focusHelper: _focusHelper,
                   ),
                   const SizedBox(height: spaceBetweenItems),
-                  ItemFreezeDate(focusHelper: _focusHelper),
+                  ItemFreezeDate(
+                    focusHelper: _focusHelper,
+                    firstDate: store.freezeDate.subtract(
+                      const Duration(days: fiveYearsInDays),
+                    ),
+                    lastDate: DateTime.now(),
+                  ),
                   const SizedBox(height: spaceBetweenItems),
-                  ItemExpirationDate(focusHelper: _focusHelper)
+                  ItemExpirationDate(
+                    focusHelper: _focusHelper,
+                    firstDate: store.expirationDate,
+                    lastDate: store.expirationDate.add(
+                      const Duration(days: fiveYearsInDays),
+                    ),
+                  )
                 ],
               ),
             ),
