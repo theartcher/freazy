@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({super.key});
@@ -81,6 +82,7 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +92,7 @@ class _AddItemPageState extends State<AddItemPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => exitWithoutSaving(),
         ),
-        title: const Text("Product toevoegen"),
+        title: Text(localization.itemConfig_create_headerTitle),
         actions: [
           _isLoading
               ? Container(

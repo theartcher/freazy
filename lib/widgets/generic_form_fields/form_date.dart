@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/widgets/generic_form_fields/date_input_formatter.dart';
+import 'package:intl/intl.dart';
 
 class DateInput extends StatefulWidget {
   final FocusNode focusNode;
@@ -11,6 +12,7 @@ class DateInput extends StatefulWidget {
   final String label;
   final IconData icon;
   final DateTime initialDate;
+  final Locale? locale;
 
   const DateInput({
     super.key,
@@ -23,6 +25,7 @@ class DateInput extends StatefulWidget {
     required this.label,
     required this.icon,
     required this.initialDate,
+    this.locale,
   });
 
   @override
@@ -34,6 +37,7 @@ class _DateInputState extends State<DateInput> {
   final TextEditingController textController = TextEditingController();
   late DateTime _selectedDate;
   bool _enabled = true;
+  Locale _selectedLocale = Locale("en");
 
   @override
   void initState() {
@@ -49,7 +53,7 @@ class _DateInputState extends State<DateInput> {
   }
 
   String _formatDate(DateTime date) {
-    return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+    return DateFormat.yMd(_selectedLocale.countryCode).format(date);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -94,14 +98,16 @@ class _DateInputState extends State<DateInput> {
             readOnly: true,
             enabled: _enabled,
             focusNode: widget.focusNode,
-            inputFormatters: [DateInputFormatter()],
             decoration: InputDecoration(
               labelText: widget.label,
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: theme.primaryColor),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: theme.primaryColor, width: 2.0),
+                borderSide: BorderSide(
+                  color: theme.primaryColor,
+                  width: 2.0,
+                ),
               ),
             ),
             onSaved: (value) => setState(() {
@@ -109,17 +115,8 @@ class _DateInputState extends State<DateInput> {
             }),
             onTap: () => _selectDate(context),
             validator: (value) {
-              if (value != null && value.isNotEmpty) {
-                final parts = value.split('/');
-                if (parts.length == 3) {
-                  final day = int.parse(parts[0]);
-                  final month = int.parse(parts[1]);
-                  final year = int.parse(parts[2]);
-                  final date = DateTime(year, month, day);
-                  return widget.validateForm(date);
-                } else {
-                  return 'Invalid date format';
-                }
+              if (value == null || value.isEmpty) {
+                return 'Invalid date format';
               }
               return null;
             },

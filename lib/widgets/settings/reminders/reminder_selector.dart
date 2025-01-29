@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/models/reminder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReminderSelector extends StatefulWidget {
   final Reminder? initialReminder;
@@ -18,6 +19,8 @@ class ReminderSelector extends StatefulWidget {
 }
 
 class _ReminderSelectorState extends State<ReminderSelector> {
+  static const spaceBetween = 8.0;
+
   late Reminder _reminder;
   final List<int> _numberOptions =
       List.generate(7, (index) => index + 1); // [1, 2, 3, 4, 5, 6, 7]
@@ -31,9 +34,12 @@ class _ReminderSelectorState extends State<ReminderSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
     return Row(
       children: [
-        const Text("Herinner mij"),
+        Text(localization.configureRemindersPage_reminder_prefix),
         const SizedBox(width: 8),
         DropdownButton<int>(
           value: _reminder.amount,
@@ -52,15 +58,23 @@ class _ReminderSelectorState extends State<ReminderSelector> {
             });
           },
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: spaceBetween),
         DropdownButton<ReminderType>(
           value: _reminder.type,
-          items: ReminderType.values
-              .map((type) => DropdownMenuItem<ReminderType>(
-                    value: type,
-                    child: Text(type.label),
-                  ))
-              .toList(),
+          items: [
+            DropdownMenuItem<ReminderType>(
+              value: ReminderType.day,
+              child: Text(
+                localization.configureRemindersPage_reminder_optionDay,
+              ),
+            ),
+            DropdownMenuItem<ReminderType>(
+              value: ReminderType.week,
+              child: Text(
+                localization.configureRemindersPage_reminder_optionWeek,
+              ),
+            )
+          ],
           onChanged: (value) {
             setState(() {
               _reminder.type = value!;
@@ -68,11 +82,13 @@ class _ReminderSelectorState extends State<ReminderSelector> {
             });
           },
         ),
-        const SizedBox(width: 8),
-        const Expanded(child: Text("van tevoren.")),
+        const SizedBox(width: spaceBetween),
+        Expanded(
+          child: Text(localization.configureRemindersPage_reminder_suffix),
+        ),
         IconButton(
           icon: const Icon(Icons.remove),
-          color: Colors.red,
+          color: theme.colorScheme.error,
           onPressed: () {
             widget.onDelete(_reminder);
           },

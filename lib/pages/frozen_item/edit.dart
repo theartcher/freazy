@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditItemPage extends StatefulWidget {
   final Item item;
@@ -31,6 +32,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
   late FrozenItemStore store;
   static const spaceBetweenItems = 8.0;
+  static const int fiveYearsInDays = 1825;
   late Future<void> _initializeFuture;
 
   ItemAutoCompleteSuggestions suggestions = ItemAutoCompleteSuggestions.empty();
@@ -85,6 +87,7 @@ class _EditItemPageState extends State<EditItemPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -94,7 +97,7 @@ class _EditItemPageState extends State<EditItemPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => exitWithoutSaving(),
         ),
-        title: const Text("Product bewerken"),
+        title: Text(localization.itemConfig_edit_headerTitle),
         actions: [
           _isLoading
               ? Container(
@@ -164,9 +167,21 @@ class _EditItemPageState extends State<EditItemPage> {
                     focusHelper: _focusHelper,
                   ),
                   const SizedBox(height: spaceBetweenItems),
-                  ItemFreezeDate(focusHelper: _focusHelper),
+                  ItemFreezeDate(
+                    focusHelper: _focusHelper,
+                    firstDate: store.freezeDate.subtract(
+                      const Duration(days: fiveYearsInDays),
+                    ),
+                    lastDate: DateTime.now(),
+                  ),
                   const SizedBox(height: spaceBetweenItems),
-                  ItemExpirationDate(focusHelper: _focusHelper)
+                  ItemExpirationDate(
+                    focusHelper: _focusHelper,
+                    firstDate: store.expirationDate,
+                    lastDate: store.expirationDate.add(
+                      const Duration(days: fiveYearsInDays),
+                    ),
+                  )
                 ],
               ),
             ),

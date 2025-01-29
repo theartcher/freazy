@@ -5,6 +5,7 @@ import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/utils/forms/form_validation_helper.dart';
 import 'package:freazy/widgets/generic_form_fields/form_text_suggestions.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemCategory extends StatefulWidget {
   final ItemAutoCompleteSuggestions suggestions;
@@ -23,6 +24,7 @@ class _ItemCategoryState extends State<ItemCategory> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return InputWithSuggestions(
       focusNode: widget.focusHelper.categoryFocusNode,
@@ -35,7 +37,7 @@ class _ItemCategoryState extends State<ItemCategory> {
           widget.focusHelper.freezeDateFocusNode,
           context),
       validateForm: (value) => _validationHelper.validateCategory(value),
-      label: 'Categorie',
+      label: localization.itemConfig_generic_categoriesTitle,
       icon: Icons.category,
     );
   }

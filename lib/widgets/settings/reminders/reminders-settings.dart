@@ -1,6 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/utils/background_manager.dart';
 import 'package:freazy/utils/settings/preferences_manager.dart';
@@ -8,6 +7,7 @@ import 'package:freazy/widgets/settings/pressable_setting.dart';
 import 'package:freazy/widgets/settings/toggle_switch_setting.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReminderSettings extends StatefulWidget {
   const ReminderSettings({super.key});
@@ -28,61 +28,61 @@ class _ReminderSettingsState extends State<ReminderSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
+    void selectTime() async {
+      TimeOfDay? selectedTime = await showTimePicker(
+        initialTime: _selectedReminderTime,
+        context: context,
+        confirmText: localization.generic_confirm,
+        cancelText: localization.generic_cancel,
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child!,
+          );
+        },
+      );
+
+      if (selectedTime != null) {
+        await PreferencesManager.saveReminderTime(selectedTime);
+        setState(() {
+          _selectedReminderTime = selectedTime;
+        });
+        BackgroundManager.scheduleReminder(
+          policyOnExistingSchedule: ExistingWorkPolicy.update,
+        );
+      }
+    }
+
     return Column(
       children: [
         ToggleSwitchSetting(
-          title: 'Meldingen ontvangen',
-          description: "Meldingen ontvangen wanneer een product bedorven is.",
+          title: localization.settingsPage_remindersSection_notificationTitle,
+          description: localization
+              .settingsPage_remindersSection_notificationDescription,
           isToggled: _UIareNotificationsEnabled,
           changeValue: _toggleNotifications,
         ),
         PressableSettingTile(
-          title: 'Herineringen beheren',
-          description: 'Configureer wanneer u herinneringen ontvangt.',
+          title: localization.settingsPage_remindersSection_remindersTitle,
+          description:
+              localization.settingsPage_remindersSection_remindersDescription,
           onPress: () => context.push(ROUTE_REMINDERS_EDIT),
-          icon: Icons.notifications,
+          trailing: const Icon(Icons.notifications),
         ),
-        //Separate widget since ]PressableSettingTile] does not yet implement [Widget?] instead of icon.
-        ListTile(
-          onTap: _selectTime,
-          title: Text("Tijd selecteren",
-              style: Theme.of(context).textTheme.bodyLarge),
-          subtitle: Text("Kies op welk tijdstip u meldingen wilt ontvangen.",
-              style: Theme.of(context).textTheme.bodySmall),
+        PressableSettingTile(
+          onPress: selectTime,
+          title: localization.settingsPage_remindersSection_reminderTimeTitle,
+          description: localization
+              .settingsPage_remindersSection_reminderTimeDescription,
           trailing: Text(
             _selectedReminderTime.format(context),
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          minVerticalPadding: 0,
         ),
       ],
     );
-  }
-
-  void _selectTime() async {
-    TimeOfDay? selectedTime = await showTimePicker(
-      initialTime: _selectedReminderTime,
-      context: context,
-      confirmText: "Bevestigen",
-      cancelText: "Annuleren",
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      },
-    );
-
-    if (selectedTime != null) {
-      await PreferencesManager.saveReminderTime(selectedTime);
-      setState(() {
-        _selectedReminderTime = selectedTime;
-      });
-      BackgroundManager.scheduleReminder(
-        policyOnExistingSchedule: ExistingWorkPolicy.update,
-      );
-    }
   }
 
   Future<void> _loadInitialSettings() async {

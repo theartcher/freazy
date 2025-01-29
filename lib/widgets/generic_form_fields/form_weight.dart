@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freazy/utils/forms/form_validation_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeightInput extends StatefulWidget {
   final FocusNode focusNode;
@@ -20,13 +21,13 @@ class WeightInput extends StatefulWidget {
   _WeightInputState createState() => _WeightInputState();
 }
 
+//TODO: Rework into 'weight.dart', this isn't generic enough.
 class _WeightInputState extends State<WeightInput> {
   final _validationHelper = FormValidationHelper();
 
   late TextEditingController _controller;
   String? _errorText;
   bool _enabled = true;
-  late String _currentWeightUnit;
 
   @override
   void initState() {
@@ -44,6 +45,8 @@ class _WeightInputState extends State<WeightInput> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Expanded(
       child: TextFormField(
         enabled: _enabled,
@@ -55,7 +58,7 @@ class _WeightInputState extends State<WeightInput> {
           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
         ],
         decoration: InputDecoration(
-          labelText: 'Gewicht',
+          labelText: localization.itemConfig_generic_weighTitle,
           errorText: _errorText,
           suffixIcon: IconButton(
             icon: const Icon(Icons.clear),

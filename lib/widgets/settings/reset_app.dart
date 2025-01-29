@@ -3,6 +3,7 @@ import 'package:freazy/utils/background_manager.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/utils/settings/preferences_manager.dart';
 import 'package:freazy/widgets/settings/pressable_setting.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ResetAppSetting extends StatefulWidget {
   const ResetAppSetting({super.key});
@@ -12,8 +13,13 @@ class ResetAppSetting extends StatefulWidget {
 }
 
 class _ResetAppSettingState extends State<ResetAppSetting> {
+  static const amountOfSpaceBetween = 16.00;
+
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
     void showDeleteConfirmationDialog() {
       showDialog(
         context: context,
@@ -23,16 +29,17 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: const Text('Weet u zeker dat u de app wilt resetten?'),
+                title:
+                    Text(localization.settingsPage_resetApp_confirmationTitle),
                 content: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Deze actie kan niet ongedaan worden gemaakt. Dit verwijderd al uw producten, instellingen en andere voorkeuren.',
+                      Text(
+                        localization.settingsPage_resetApp_confirmationContext,
                       ),
-                      const SizedBox(height: 10), // Add spacing
+                      const SizedBox(height: amountOfSpaceBetween),
                       Row(
                         children: [
                           Checkbox(
@@ -43,9 +50,11 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
                               });
                             },
                           ),
-                          const Expanded(
-                            child:
-                                Text('Ik begrijp de gevolgen van deze actie.'),
+                          Expanded(
+                            child: Text(
+                              localization
+                                  .settingsPage_resetApp_checkboxAcceptConsequences,
+                            ),
                           ),
                         ],
                       ),
@@ -54,7 +63,7 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text('Annuleren'),
+                    child: Text(localization.generic_cancel),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -71,7 +80,7 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
                           }
                         : null,
                     child: Text(
-                      'Verwijderen',
+                      localization.generic_delete,
                       style: TextStyle(
                         color: confirmResetApp ? Colors.red : Colors.grey,
                       ),
@@ -86,10 +95,13 @@ class _ResetAppSettingState extends State<ResetAppSetting> {
     }
 
     return PressableSettingTile(
-      title: 'Reset app',
+      title: localization.settingsPage_resetApp_resetAppTitle,
       onPress: showDeleteConfirmationDialog,
-      color: Colors.red,
-      icon: Icons.delete,
+      color: theme.colorScheme.error,
+      trailing: Icon(
+        Icons.delete,
+        color: theme.colorScheme.error,
+      ),
     );
   }
 }

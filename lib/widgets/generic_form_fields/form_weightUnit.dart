@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeightUnitSelector extends StatefulWidget {
   final List<String> autocompleteSuggestions;
@@ -22,12 +23,15 @@ class WeightUnitSelector extends StatefulWidget {
   State<WeightUnitSelector> createState() => _WeightUnitSelectorState();
 }
 
+//TODO: Rework this into 'weigh-input.dart' widget, this isn't generic enough so can be used directly.
 class _WeightUnitSelectorState extends State<WeightUnitSelector> {
   bool _enabled = true;
   bool _hasBeenInitialized = false;
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: IntrinsicWidth(
@@ -58,8 +62,8 @@ class _WeightUnitSelectorState extends State<WeightUnitSelector> {
                 validator: widget.validateForm,
                 controller: controller,
                 focusNode: focusNode,
-                decoration: const InputDecoration(
-                  labelText: 'Eenheid',
+                decoration: InputDecoration(
+                  labelText: localization.itemConfig_generic_weightUnitTitle,
                 ),
 
                 //TODO: Focusnode for units

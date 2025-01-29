@@ -1,0 +1,250 @@
+{
+  "@@locale": "en",
+  "homePageSection": "",
+  "@homePageSection": {
+    "description": "No content, this key is only a divider in the .arb file."
+  },
+  "homePage_header_appTitle": "Freazy",
+  "@homePage_header_appTitle": {
+    "description": "The title of the app in the header bar."
+  },
+  "homePage_searchBar_searching": "Search...",
+  "@homePage_searchBar_searching": {
+    "description": "The search bar when no input has been given."
+  },
+  "homePage_items_noItemsFound": "No products found.",
+  "@homePage_items_noItemsFound": {
+    "description": "The text shown in the home page when no items are found after loading has finished."
+  },
+  "homePage_searchBar_sortItemsAlphabetically": "Alphabetically",
+  "@homePage_searchBar_sortItemsAlphabetically": {
+    "description": "The sort by alphabetical sorting option."
+  },
+  "homePage_searchBar_sortToExpireFirst": "Expiration date",
+  "@homePage_searchBar_sortToExpireFirst": {
+    "description": "The sort by expiration date option."
+  },
+  "homePage_searchBar_sortCategoryAlphabetically": "Categories",
+  "@homePage_searchBar_sortCategoryAlphabetically": {
+    "description": "The sort by categories option."
+  },
+  "homePage_searchBar_sortFreezerAlphabetically": "Freezers",
+  "@homePage_searchBar_sortFreezerAlphabetically": {
+    "description": "The sort by freezer option."
+  },
+  "homePage_item_deletedItem": "Deleted {item}.",
+  "@homePage_item_deletedItem": {
+    "description": "The notification shown after deleting an item.",
+    "placeholders": {
+      "item": {
+        "type": "String"
+      }
+    }
+  },
+  "homePage_item_undoDeleteItem": "Undo deletion",
+  "@homePage_item_undoDeleteItem": {
+    "description": "The text shown to undo the last deletion of an item."
+  },
+  "homePage_item_description": "Expiry date: {date}\nLocation: {freezer}\nCategory: {category}",
+  "@homePage_item_description": {
+    "description": "The description of a item's tile.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "freezer": {
+        "type": "String"
+      },
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "homePage_item_header": "{title} ({weight}{weightUnit})",
+  "@homePage_item_header": {
+    "description": "The header of an item's tile",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "weight": {
+        "type": "num"
+      },
+      "weightUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "homePage_item_expiredAttribute": "[EXPIRED]",
+  "@homePage_item_expiredAttribute": {
+    "description": "The attribute attached to a tile which has passed it's expiration date."
+  },
+  "settingsPageSection": "",
+  "@settingsPageSection": {
+    "description": "No content, this key is only a divider in the .arb file."
+  },
+  "settingsPage_header_title": "Settings",
+  "@settingsPage_header_title": {
+    "description": "The title of the page."
+  },
+  "settingsPage_remindersSection_header": "Notifications & Reminders",
+  "@settingsPage_remindersSection_header": {
+    "description": "The title of the reminders section."
+  },
+  "settingsPage_remindersSection_notificationTitle": "Receive notifications",
+  "@settingsPage_remindersSection_notificationTitle": {
+    "description": "Title of the checkbox to toggle notifications."
+  },
+  "settingsPage_remindersSection_notificationDescription": "Get notifications when products are about to expire.",
+  "@settingsPage_remindersSection_notificationDescription": {
+    "description": "Description of the checkbox to toggle notifications."
+  },
+  "settingsPage_remindersSection_remindersTitle": "Manage reminders",
+  "@settingsPage_remindersSection_remindersTitle": {
+    "description": "The title text of setting to manage reminders."
+  },
+  "settingsPage_remindersSection_remindersDescription": "Configure when you'll receive notifications.",
+  "@settingsPage_remindersSection_remindersDescription": {
+    "description": "The description text of setting to manage reminders."
+  },
+  "settingsPage_remindersSection_reminderTimeTitle": "Select preferred time",
+  "@settingsPage_remindersSection_reminderTimeTitle": {
+    "description": "The title text of setting to select a time to receive reminders."
+  },
+  "settingsPage_remindersSection_reminderTimeDescription": "Choose the time you prefer to receive your reminders.",
+  "@settingsPage_remindersSection_reminderTimeDescription": {
+    "description": "The description text of setting to select a time to receive reminders."
+  },
+  "settingsPage_personalizationSection_header": "Personalization",
+  "@settingsPage_personalizationSection_header": {
+    "description": "The title of the personalization sections."
+  },
+  "settingsPage_personalizationSection_themeTitle": "Select a theme",
+  "@settingsPage_personalizationSection_themeTitle": {
+    "description": "The title of the theme selector."
+  },
+  "settingsPage_personalizationSection_themeDescription": "Change the app's appearance",
+  "@settingsPage_personalizationSection_themeDescription": {
+    "description": "The description of the theme selector."
+  },
+  "settingsPage_personalizationSection_themeLight": "Light",
+  "@settingsPage_personalizationSection_themeLight": {
+    "description": "The name of the light theme."
+  },
+  "settingsPage_personalizationSection_themeDark": "Dark",
+  "@settingsPage_personalizationSection_themeDark": {
+    "description": "The name of the dark theme."
+  },
+  "settingsPage_personalizationSection_themeSystem": "System",
+  "@settingsPage_personalizationSection_themeSystem": {
+    "description": "The name of the system theme."
+  },
+  "settingsPage_personalizationSection_localeTitle": "Language",
+  "@settingsPage_personalizationSection_localeTitle": {
+    "description": "The title of the locale selector."
+  },
+  "settingsPage_personalizationSection_localeDescription": "Select your preferred language.",
+  "@settingsPage_personalizationSection_localeDescription": {
+    "description": "The description of the locale selector."
+  },
+  "settingsPage_personalizationSection_localeEN": "English",
+  "@settingsPage_personalizationSection_localeEN": {
+    "description": "The name of the 'EN' locale."
+  },
+  "settingsPage_personalizationSection_localeNL": "Dutch",
+  "@settingsPage_personalizationSection_localeNL": {
+    "description": "The name of the 'NL' locale."
+  },
+  "settingsPage_resetApp_resetAppTitle": "Reset app",
+  "@settingsPage_resetApp_resetAppTitle": {
+    "description": "The title of the setting that triggers the resetting pop-up."
+  },
+  "settingsPage_resetApp_confirmationTitle": "Are you sure you wish to reset the entire app?",
+  "@settingsPage_resetApp_confirmationTitle": {
+    "description": "The title of the pop-up to confirm/cancel the 'reset app' action."
+  },
+  "settingsPage_resetApp_confirmationContext": "This action cannot be undone. This will completely remove all products, settings, and other preferences.",
+  "@settingsPage_resetApp_confirmationContext": {
+    "description": "The explanation of the pop-up to confirm/cancel the 'reset app' action."
+  },
+  "settingsPage_resetApp_checkboxAcceptConsequences": "I understand and accept the consequences of resetting",
+  "@settingsPage_resetApp_checkboxAcceptConsequences": {
+    "description": "The elaboration of the checkbox, explaining the users accepts all consequences."
+  },
+  "configureRemindersPage_header_title": "Configure reminders",
+  "@configureRemindersPage_header_title": {
+    "description": "The title of the page to configure reminders on."
+  },
+  "configureRemindersPage_section_title": "Add new reminder",
+  "@configureRemindersPage_section_title": {
+    "description": "The text of the section which allows to add a new reminder."
+  },
+  "configureRemindersPage_reminder_prefix": "Remind me in",
+  "@configureRemindersPage_reminder_prefix": {
+    "description": "The prefix of the reminder selector"
+  },
+  "configureRemindersPage_reminder_optionDay": "day(s)",
+  "@configureRemindersPage_reminder_optionDay": {
+    "description": "The text for the 'day' option."
+  },
+  "configureRemindersPage_reminder_optionWeek": "week(s)",
+  "@configureRemindersPage_reminder_optionWeek": {
+    "description": "The text for the 'week' option."
+  },
+  "configureRemindersPage_reminder_suffix": "",
+  "@configureRemindersPage_reminder_suffix": {
+    "description": "The suffix of the reminder selector"
+  },
+  "configureRemindersPage_reminder_noActiveReminders": "You have no active reminders.",
+  "@configureRemindersPage_reminder_noActiveReminders": {
+    "description": "The text shown when the user has no active reminders"
+  },
+  "itemConfig_generic_productTitle": "Product",
+  "@itemConfig_generic_productTitle": {
+    "description": "text"
+  },
+  "itemConfig_generic_weighTitle": "Weight",
+  "@itemConfig_generic_weighTitle": {
+    "description": "text"
+  },
+  "itemConfig_generic_weightUnitTitle": "Unit",
+  "@itemConfig_generic_weightUnitTitle": {
+    "description": "text"
+  },
+  "itemConfig_generic_freezerTitle": "Freezer",
+  "@itemConfig_generic_freezerTitle": {
+    "description": "text"
+  },
+  "itemConfig_generic_categoriesTitle": "Category",
+  "@itemConfig_generic_categoriesTitle": {
+    "description": "text"
+  },
+  "itemConfig_generic_freezeDateTitle": "Freeze-in date",
+  "@itemConfig_generic_freezeDateTitle": {
+    "description": "text"
+  },
+  "itemConfig_generic_expirationDateTitle": "Expiration date",
+  "@itemConfig_generic_expirationDateTitle": {
+    "description": "text"
+  },
+  "itemConfig_edit_headerTitle": "Edit product",
+  "@itemConfig_edit_headerTitle": {
+    "description": "text"
+  },
+  "itemConfig_create_headerTitle": "Add product",
+  "@itemConfig_create_headerTitle": {
+    "description": "text"
+  },
+  "generic_cancel": "Cancel",
+  "@generic_cancel": {
+    "description": "Generic cancel text on pop-ups and menus, meaning to exit without making changes."
+  },
+  "generic_confirm": "Confirm",
+  "@generic_confirm": {
+    "description": "Generic confirmation text on pop-ups and menus, meaning to apply or confirm a change."
+  },
+  "generic_delete": "Delete",
+  "@generic_delete": {
+    "description": "Generic NEGATIVE confirmation text on pop-ups and menus, meaning to confirm a destructive action that deletes something."
+  }
+}

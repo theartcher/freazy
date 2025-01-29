@@ -5,6 +5,7 @@ import 'package:freazy/utils/forms/form_focus_helper.dart';
 import 'package:freazy/utils/forms/form_validation_helper.dart';
 import 'package:freazy/widgets/generic_form_fields/form_text_suggestions.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemFreezer extends StatefulWidget {
   final ItemAutoCompleteSuggestions suggestions;
@@ -23,6 +24,7 @@ class _ItemFreezerState extends State<ItemFreezer> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<FrozenItemStore>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return InputWithSuggestions(
       focusNode: widget.focusHelper.freezerFocusNode,
@@ -35,7 +37,7 @@ class _ItemFreezerState extends State<ItemFreezer> {
           widget.focusHelper.categoryFocusNode,
           context),
       validateForm: (value) => _validationHelper.validateFreezer(value),
-      label: 'Vriezer',
+      label: localization.itemConfig_generic_freezerTitle,
       icon: Icons.kitchen,
     );
   }

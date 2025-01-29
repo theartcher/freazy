@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
-
+/* 
+TODO: Add localization support
+TODO: Implement proper notification and feedback using banners, snackbars ect.
+*/
 class FormValidationHelper {
   String? validateTitle(String? value) {
     if (value == null || value.isEmpty) {
@@ -52,13 +54,6 @@ class FormValidationHelper {
       return 'Je moet een invriesdatum kiezen.';
     }
 
-    DateTime freezeInDateAsDay = DateUtils.dateOnly(freezeInDate);
-    DateTime nowAsDay = DateUtils.dateOnly(DateTime.now());
-
-    if (freezeInDateAsDay.isAfter(nowAsDay)) {
-      return 'Je kan geen product in de toekomst invriezen.';
-    }
-
     return null;
   }
 
@@ -67,12 +62,6 @@ class FormValidationHelper {
       return 'Je moet een houdbaarheidsdatum kiezen.';
     }
 
-    DateTime expireDateAsDay = DateUtils.dateOnly(expirationDate);
-    DateTime nowAsDay = DateUtils.dateOnly(DateTime.now());
-
-    if (expireDateAsDay.isBefore(nowAsDay)) {
-      return 'Je kan geen bedorven product invriezen.';
-    }
     return null;
   }
 }
