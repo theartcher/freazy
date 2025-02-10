@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freazy/models/loading_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
@@ -9,6 +10,7 @@ import 'package:freazy/utils/home/sorting_helper.dart';
 import 'package:freazy/widgets/home/list_tile.dart';
 import 'package:freazy/widgets/sort_items.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   List<Item> _originalList = [];
   List<Item> _searchedAndSortedItems = [];
   String _searchQuery = '';
+  LoadingStates state = LoadingStates.isImportant;
 
   @override
   void initState() {
@@ -41,6 +44,7 @@ class _HomePageState extends State<HomePage> {
       _searchedAndSortedItems =
           sortByType(_selectedSorting, _searchedAndSortedItems);
       _originalList = allItems;
+      state = LoadingStates.isNotLoading;
     });
 
     //If the user was searching, refresh the search.
@@ -85,6 +89,9 @@ class _HomePageState extends State<HomePage> {
               final result = await context.push(ROUTE_ITEM_ADD);
 
               if (result == true) {
+                setState(() {
+                  state = LoadingStates.isImportant;
+                });
                 _fetchItems();
               }
             },
@@ -135,32 +142,81 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          Expanded(
-            child: _searchedAndSortedItems.isEmpty
-                ? Center(
-                    child: Text(
-                      localization.homePage_items_noItemsFound,
-                    ),
-                  )
-                : RefreshIndicator(
-                    onRefresh: _fetchItems,
-                    child: ListView.separated(
-                      itemCount: _searchedAndSortedItems.length,
-                      itemBuilder: (context, index) {
-                        final item = _searchedAndSortedItems[index];
-                        return OverviewListTile(
-                          fetchItems: () => _fetchItems(),
-                          item: item,
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
-                        height: 1,
-                        thickness: 2,
-                      ),
-                    ),
+          // Full refresh load indicator. E.g. deleting, editing or adding items.
+          if (state == LoadingStates.isImportant)
+            Expanded(
+              child: Skeletonizer(
+                child: ListView.separated(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    final Item item = Item(
+                        id: 0,
+                        title: "long title thing",
+                        freezer: "freezer",
+                        category: "category",
+                        weight: 1,
+                        weightUnit: "g",
+                        freezeDate: DateTime.now(),
+                        expirationDate: DateTime.now().add(
+                          const Duration(days: 1),
+                        ));
+                    return OverviewListTile(
+                      fetchItems: () => _fetchItems(),
+                      item: item,
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(
+                    height: 1,
+                    thickness: 2,
                   ),
-          ),
+                ),
+              ),
+            ),
+          // No items found and not loading.
+          if (_searchedAndSortedItems.isEmpty &&
+              state == LoadingStates.isNotLoading)
+            Expanded(
+              child: Center(
+                child: Text(
+                  localization.homePage_items_noItemsFound,
+                ),
+              ),
+            ),
+          if (state == LoadingStates.isNotEssential ||
+              state == LoadingStates.isNotLoading)
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    state = LoadingStates.isNotEssential;
+                  });
+
+                  await _fetchItems();
+                },
+                child: ListView.separated(
+                  itemCount: _searchedAndSortedItems.length,
+                  itemBuilder: (context, index) {
+                    final item = _searchedAndSortedItems[index];
+                    return OverviewListTile(
+                      fetchItems: () {
+                        setState(() {
+                          state = LoadingStates.isImportant;
+                        });
+
+                        _fetchItems();
+                      },
+                      item: item,
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(
+                    height: 1,
+                    thickness: 2,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

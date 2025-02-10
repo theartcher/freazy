@@ -103,7 +103,7 @@ class _MainAppState extends State<MainApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
+        Locale('en'), // English US
         Locale('nl'), // Dutch
       ],
     );
