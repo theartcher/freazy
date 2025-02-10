@@ -142,6 +142,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+          // Full refresh load indicator. E.g. deleting, editing or adding items.
           if (state == LoadingStates.isImportant)
             Expanded(
               child: Skeletonizer(
@@ -172,6 +173,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+          // No items found and not loading.
           if (_searchedAndSortedItems.isEmpty &&
               state == LoadingStates.isNotLoading)
             Expanded(
