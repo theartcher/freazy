@@ -23,6 +23,7 @@ dependencies:
   awesome_notifications: ^0.10.0
   flutter_localizations:
     sdk: flutter
+  skeletonizer: ^1.4.3
 
 dev_dependencies:
   flutter_test:
