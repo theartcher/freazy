@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class Item {
@@ -81,4 +83,7 @@ class Item {
       freezer: map['freezer'] as String,
     );
   }
+
+  String toJson() => json.encode(toMap());
+  factory Item.fromJson(String source) => Item.fromMap(json.decode(source));
 }

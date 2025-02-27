@@ -10,6 +10,7 @@ import 'package:freazy/utils/settings/preferences_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'widgets/messenger.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
@@ -106,6 +107,7 @@ class _MainAppState extends State<MainApp> {
         Locale('en'), // English US
         Locale('nl'), // Dutch
       ],
+      scaffoldMessengerKey: MessengerService.messengerKey,
     );
   }
 

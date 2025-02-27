@@ -1,0 +1,90 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:freazy/models/backup_state.dart';
+import 'package:freazy/models/item.dart';
+import 'package:freazy/utils/databases/item_database_helper.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class DatabaseBackup {
+  //Import
+  //Define method
+  //Input: Clear current database checkbox? || File path
+  //Parse the JSON to List<Item> items
+  //Check if all items are valid
+  //Remove any problematic items
+  //Check (via row count) if the database was added successfully.
+
+  //Export
+  //Define method X
+  //Input: Location to save file to X
+  //Get all List<Item> items X
+  //Remove any problematic items
+  //Parse to JSON
+  //Save to file
+  Future<BackupStates> exportDatabaseToJson() async {
+    final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
+    List<Item> itemsToExport = await dbHelper.fetchItems();
+
+    //Don't export an empty database.
+    if (itemsToExport.isEmpty) {
+      return BackupStates.noItems;
+    }
+
+    String exportFileName =
+        "freazy_${DateTime.now().toString().replaceAll(':', '-')}_export.json";
+    String itemsAsJson = jsonEncode(itemsToExport);
+
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    if (selectedDirectory == null) {
+      // User canceled the picker
+      return BackupStates.userCancel;
+    }
+
+    String fileNameWithPath =
+        "$selectedDirectory${Platform.pathSeparator}$exportFileName";
+    return _saveToFile(fileNameWithPath, itemsAsJson);
+  }
+
+  Future<BackupStates> _saveToFile(
+      String fileLocation, String exportedJsonItems) async {
+    if (Platform.isAndroid) {
+      // For Android 10 (API level 29) and below
+      final storagePermission =
+          await Permission.manageExternalStorage.request();
+      if (!storagePermission.isGranted) {
+        print("Storage permission denied");
+        return BackupStates.permissionsDenied;
+      }
+    }
+
+    try {
+      final exportFile = File(fileLocation);
+      // Create parent directories if they don't exist
+      await exportFile.parent.create(recursive: true);
+      await exportFile.writeAsString(exportedJsonItems);
+      return BackupStates.succes;
+    } catch (e) {
+      return BackupStates.unknownError;
+    }
+  }
+
+  ///Filter out any items with invalid properties. (e.g. id that's null, freeze date being after the expiration date etc.)
+  List<Item> removeInvalidItems(List<Item> unfilteredItems) {
+    unfilteredItems.removeWhere(
+      (item) =>
+          item.id == null ||
+          item.expirationDate.isBefore(item.freezeDate) ||
+          item.title.isEmpty ||
+          item.weight.isInfinite ||
+          item.weight.isNaN ||
+          item.weight <= 0 ||
+          item.category.isEmpty ||
+          item.freezer.isEmpty ||
+          item.weightUnit.isEmpty,
+    );
+
+    return unfilteredItems;
+  }
+}
