@@ -98,7 +98,16 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => context.push(ROUTE_SETTINGS),
+            onPressed: () async {
+              final result = await context.push(ROUTE_SETTINGS);
+
+              if (result == true) {
+                setState(() {
+                  state = LoadingStates.isImportant;
+                });
+                _fetchItems();
+              }
+            },
           ),
         ],
       ),

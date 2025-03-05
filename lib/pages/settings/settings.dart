@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freazy/widgets/settings/export_settings.dart';
+import 'package:freazy/widgets/settings/export-import/export_settings.dart';
 import 'package:freazy/widgets/settings/personalization/personalization_setting.dart';
 import 'package:freazy/widgets/settings/reminders/reminders-settings.dart';
 import 'package:freazy/widgets/settings/reset_app.dart';
@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(localization.settingsPage_header_title),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () => context.pop(true),
         ),
       ),
       body: ListView(

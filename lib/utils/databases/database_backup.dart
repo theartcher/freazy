@@ -15,14 +15,35 @@ class DatabaseBackup {
   //Check if all items are valid
   //Remove any problematic items
   //Check (via row count) if the database was added successfully.
+  Future<BackupStates> importDatabaseFromJson(
+      {bool removeExistingItem = false}) async {
+    final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
 
-  //Export
-  //Define method X
-  //Input: Location to save file to X
-  //Get all List<Item> items X
-  //Remove any problematic items
-  //Parse to JSON
-  //Save to file
+    var backupJsonFiles = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
+
+    if (backupJsonFiles == null || backupJsonFiles.count <= 0) {
+      // User canceled the file picker.
+      return BackupStates.userCancel;
+    }
+
+    String unparsedFileContents =
+        File(backupJsonFiles.files.first.path!).readAsStringSync();
+    List<dynamic> jsonList = jsonDecode(unparsedFileContents);
+    List<Item> itemsToImport =
+        jsonList.map((item) => Item.fromJson(item)).toList();
+
+    if (removeExistingItem) {
+      await dbHelper.deleteAndRecreateDatabase();
+    }
+
+    await dbHelper.insertItems(itemsToImport);
+
+    return BackupStates.succes;
+  }
+
+  /// Exports all items in the database to a selected location in the form of a JSON file.
   Future<BackupStates> exportDatabaseToJson() async {
     final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
     List<Item> itemsToExport = await dbHelper.fetchItems();
@@ -36,6 +57,8 @@ class DatabaseBackup {
         "freazy_${DateTime.now().toString().replaceAll(':', '-')}_export.json";
     String itemsAsJson = jsonEncode(itemsToExport);
 
+    //TODO Add settings to picker dialogue
+
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory == null) {
       // User canceled the picker
@@ -47,6 +70,7 @@ class DatabaseBackup {
     return _saveToFile(fileNameWithPath, itemsAsJson);
   }
 
+  /// Stores a list of items to an export file in the specified directory.
   Future<BackupStates> _saveToFile(
       String fileLocation, String exportedJsonItems) async {
     if (Platform.isAndroid) {
@@ -54,7 +78,6 @@ class DatabaseBackup {
       final storagePermission =
           await Permission.manageExternalStorage.request();
       if (!storagePermission.isGranted) {
-        print("Storage permission denied");
         return BackupStates.permissionsDenied;
       }
     }

@@ -56,6 +56,18 @@ class ItemDatabaseHelper {
     );
   }
 
+  Future<void> insertItems(List<Item> items) async {
+    final db = await database;
+    final batch = db.batch();
+
+    for (Item item in items) {
+      item.id = null;
+      batch.insert(_table, item.toMap());
+    }
+
+    await batch.commit();
+  }
+
   Future<Item?> getItem(int id) async {
     final db = await database;
 
@@ -98,6 +110,8 @@ class ItemDatabaseHelper {
 
     return itemMap.map((map) => Item.fromMap(map)).toList();
   }
+
+// #region Autocomplete suggestions
 
   Future<List<String>> fetchExistingTitles() async {
     final db = await database;
@@ -180,4 +194,6 @@ class ItemDatabaseHelper {
 
     return mostCommonFreezer ?? 'g';
   }
+
+// #endregion
 }
