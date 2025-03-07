@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum MessagePosition {
   top,
@@ -21,42 +22,39 @@ class MessengerService {
 
   void showMessage({
     required String message,
+    String? closeMessage,
     MessagePosition position = MessagePosition.bottom,
     MessageType type = MessageType.info,
     Duration duration = const Duration(seconds: 3),
     VoidCallback? onClose,
   }) {
+    final context = messengerKey.currentContext!;
+    final localization = AppLocalizations.of(context)!;
     final messenger = messengerKey.currentState;
     if (messenger == null) return;
 
-    // Clear any existing messages first
-    messenger.hideCurrentMaterialBanner();
     messenger.hideCurrentSnackBar();
 
-    if (position == MessagePosition.bottom) {
-      _showSnackBar(
-        message: message,
-        type: type,
-        duration: duration,
-        onClose: onClose,
-      );
-    } else {
-      _showBanner(
-        message: message,
-        position: position,
-        type: type,
-        duration: duration,
-        onClose: onClose,
-      );
-    }
+    _showSnackBar(
+      message: message,
+      type: type,
+      duration: duration,
+      onClose: onClose,
+      position: position,
+      closeText: closeMessage ?? localization.generic_dismiss,
+    );
   }
 
   void _showSnackBar({
     required String message,
     required MessageType type,
     required Duration duration,
+    required String closeText,
     VoidCallback? onClose,
+    MessagePosition position = MessagePosition.bottom,
   }) {
+    final context = messengerKey.currentContext!;
+
     final snackBar = SnackBar(
       content: Row(
         children: [
@@ -73,8 +71,15 @@ class MessengerService {
       backgroundColor: _getBackgroundColor(type),
       duration: duration,
       behavior: SnackBarBehavior.floating,
+      margin: position == MessagePosition.top
+          ? EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 100,
+              left: 10,
+              right: 10,
+            )
+          : const EdgeInsets.all(10),
       action: SnackBarAction(
-        label: 'Dismiss',
+        label: closeText,
         textColor: _getForegroundColor(type),
         onPressed: () {
           messengerKey.currentState?.hideCurrentSnackBar();
@@ -86,50 +91,7 @@ class MessengerService {
     messengerKey.currentState?.showSnackBar(snackBar);
   }
 
-  void _showBanner({
-    required String message,
-    required MessagePosition position,
-    required MessageType type,
-    required Duration duration,
-    VoidCallback? onClose,
-  }) {
-    final banner = MaterialBanner(
-      content: Text(
-        message,
-        style: TextStyle(color: _getForegroundColor(type)),
-      ),
-      backgroundColor: _getBackgroundColor(type),
-      leading: _getIcon(type, _getForegroundColor(type)),
-      actions: [
-        TextButton(
-          onPressed: () {
-            messengerKey.currentState?.hideCurrentMaterialBanner();
-            onClose?.call();
-          },
-          child: Text(
-            'Dismiss',
-            style: TextStyle(color: _getForegroundColor(type)),
-          ),
-        ),
-      ],
-      contentTextStyle: TextStyle(color: _getForegroundColor(type)),
-      padding: EdgeInsets.only(
-        top: position == MessagePosition.top
-            ? MediaQuery.of(messengerKey.currentContext!).padding.top
-            : 0,
-        left: 16,
-        right: 16,
-        bottom: 16,
-      ),
-    );
-
-    messengerKey.currentState?.showMaterialBanner(banner);
-    Future.delayed(duration, () {
-      messengerKey.currentState?.hideCurrentMaterialBanner();
-      onClose?.call();
-    });
-  }
-
+  //#region Helper methods
   Color _getForegroundColor(MessageType type) {
     final theme = Theme.of(messengerKey.currentContext!);
 
@@ -164,4 +126,5 @@ class MessengerService {
         return Icon(Icons.info, color: color);
     }
   }
+  // #endregion
 }

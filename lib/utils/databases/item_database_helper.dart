@@ -46,6 +46,8 @@ class ItemDatabaseHelper {
     await databaseFactory.deleteDatabase(path);
   }
 
+// #region CRUD item database operations
+
   Future<void> insertItem(Item item) async {
     final db = await database;
 
@@ -110,6 +112,8 @@ class ItemDatabaseHelper {
 
     return itemMap.map((map) => Item.fromMap(map)).toList();
   }
+
+// #endregion
 
 // #region Autocomplete suggestions
 

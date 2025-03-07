@@ -171,6 +171,22 @@
   "@settingsPage_resetApp_checkboxAcceptConsequences": {
     "description": "The elaboration of the checkbox, explaining the users accepts all consequences."
   },
+  "settingsPage_exportDatabase_exportDatabaseTitle": "Exporteer backup",
+  "@settingsPage_exportDatabase_exportDatabaseTitle": {
+    "description": "The title of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_exportDatabase_exportDatabaseDescription": "Exporteer de database naar een bestand.",
+  "@settingsPage_exportDatabase_exportDatabaseDescription": {
+    "description": "The description of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_importDatabase_importDatabaseTitle": "Importeer backup",
+  "@settingsPage_importDatabase_importDatabaseTitle": {
+    "description": "The title of the setting that triggers the importing pop-up."
+  },
+  "settingsPage_importDatabase_importDatabaseDescription": "Importeer een database vanuit een bestand.",
+  "@settingsPage_importDatabase_importDatabaseDescription": {
+    "description": "The description of the setting that triggers the importing pop-up."
+  },
   "configureRemindersPage_header_title": "Configureer herinnerringen",
   "@configureRemindersPage_header_title": {
     "description": "The title of the page to configure reminders on."
@@ -194,6 +210,18 @@
   "configureRemindersPage_reminder_suffix": "van tevoren",
   "@configureRemindersPage_reminder_suffix": {
     "description": "The suffix of the reminder selector"
+  },
+  "configureRemindersPage_reminderValidation_duplicate": "Er is al een melding met deze instellingen \"{reminderAmount} - {reminderType}\".",
+  "@configureRemindersPage_reminderValidation_duplicate": {
+    "description": "The error message shown when the user tries to add a reminder that already exists.",
+    "placeholders": {
+      "reminderAmount": {
+        "type": "num"
+      },
+      "reminderType": {
+        "type": "String"
+      }
+    }
   },
   "configureRemindersPage_reminder_noActiveReminders": "U heeft geen opgeslagen herinnerringen",
   "@configureRemindersPage_reminder_noActiveReminders": {
@@ -246,5 +274,13 @@
   "generic_delete": "Verwijderen",
   "@generic_delete": {
     "description": "Generic NEGATIVE confirmation text on pop-ups and menus, meaning to confirm a destructive action that deletes something."
+  },
+  "generic_dismiss": "Sluiten",
+  "@generic_dismiss": {
+    "description": "Generic dismiss text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_undo": "Ongedaan maken",
+  "@generic_undo": {
+    "description": "Generic undo text on pop-ups and menus, meaning to close the pop-up or menu."
   }
 }

@@ -171,6 +171,22 @@
   "@settingsPage_resetApp_checkboxAcceptConsequences": {
     "description": "The elaboration of the checkbox, explaining the users accepts all consequences."
   },
+  "settingsPage_exportDatabase_exportDatabaseTitle": "Export backup",
+  "@settingsPage_exportDatabase_exportDatabaseTitle": {
+    "description": "The title of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_exportDatabase_exportDatabaseDescription": "Export your database to a file.",
+  "@settingsPage_exportDatabase_exportDatabaseDescription": {
+    "description": "The description of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_importDatabase_importDatabaseTitle": "Import backup",
+  "@settingsPage_importDatabase_importDatabaseTitle": {
+    "description": "The title of the setting that triggers the importing pop-up."
+  },
+  "settingsPage_importDatabase_importDatabaseDescription": "Import a database from a file.",
+  "@settingsPage_importDatabase_importDatabaseDescription": {
+    "description": "The description of the setting that triggers the importing pop-up."
+  },
   "configureRemindersPage_header_title": "Configure reminders",
   "@configureRemindersPage_header_title": {
     "description": "The title of the page to configure reminders on."
@@ -194,6 +210,18 @@
   "configureRemindersPage_reminder_suffix": "",
   "@configureRemindersPage_reminder_suffix": {
     "description": "The suffix of the reminder selector"
+  },
+  "configureRemindersPage_reminderValidation_duplicate": "A reminder of these values \"{reminderAmount} - {reminderType}\" already exists.",
+  "@configureRemindersPage_reminderValidation_duplicate": {
+    "description": "The error message shown when the user tries to add a reminder that already exists.",
+    "placeholders": {
+      "reminderAmount": {
+        "type": "num"
+      },
+      "reminderType": {
+        "type": "String"
+      }
+    }
   },
   "configureRemindersPage_reminder_noActiveReminders": "You have no active reminders.",
   "@configureRemindersPage_reminder_noActiveReminders": {
@@ -246,5 +274,13 @@
   "generic_delete": "Delete",
   "@generic_delete": {
     "description": "Generic NEGATIVE confirmation text on pop-ups and menus, meaning to confirm a destructive action that deletes something."
+  },
+  "generic_dismiss": "Dismiss",
+  "@generic_dismiss": {
+    "description": "Generic dismiss text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_undo": "Undo",
+  "@generic_undo": {
+    "description": "Generic undo text on pop-ups and menus, meaning to close the pop-up or menu."
   }
 }

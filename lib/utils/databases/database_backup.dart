@@ -8,28 +8,26 @@ import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DatabaseBackup {
-  //Import
-  //Define method
-  //Input: Clear current database checkbox? || File path
-  //Parse the JSON to List<Item> items
-  //Check if all items are valid
-  //Remove any problematic items
-  //Check (via row count) if the database was added successfully.
-  Future<BackupStates> importDatabaseFromJson(
-      {bool removeExistingItem = false}) async {
-    final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
-
+  /// Prompts the user to select a file to import from.
+  Future<String?> selectBackupFile() async {
     var backupJsonFiles = await FilePicker.platform.pickFiles(
       allowMultiple: false,
     );
 
     if (backupJsonFiles == null || backupJsonFiles.count <= 0) {
       // User canceled the file picker.
-      return BackupStates.userCancel;
+      return null;
     }
 
-    String unparsedFileContents =
-        File(backupJsonFiles.files.first.path!).readAsStringSync();
+    return backupJsonFiles.files.first.path;
+  }
+
+  /// Imports items from a JSON file to the database.
+  Future<BackupStates> importDatabaseFromJson(
+      {required String filePath, bool removeExistingItem = false}) async {
+    final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
+
+    String unparsedFileContents = File(filePath).readAsStringSync();
     List<dynamic> jsonList = jsonDecode(unparsedFileContents);
     List<Item> itemsToImport =
         jsonList.map((item) => Item.fromJson(item)).toList();
@@ -56,8 +54,6 @@ class DatabaseBackup {
     String exportFileName =
         "freazy_${DateTime.now().toString().replaceAll(':', '-')}_export.json";
     String itemsAsJson = jsonEncode(itemsToExport);
-
-    //TODO Add settings to picker dialogue
 
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory == null) {
@@ -88,7 +84,7 @@ class DatabaseBackup {
       await exportFile.parent.create(recursive: true);
       await exportFile.writeAsString(exportedJsonItems);
       return BackupStates.succes;
-    } catch (e) {
+    } catch (error) {
       return BackupStates.unknownError;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freazy/main.dart';
+import 'package:freazy/widgets/messenger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
@@ -19,14 +20,14 @@ class OverviewListTile extends StatelessWidget {
     final ItemDatabaseHelper dbHelper = ItemDatabaseHelper();
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
-    final paddingEdges = 18.0;
+    const paddingEdges = 18.0;
 
     return Dismissible(
       key: Key(item.id.toString()),
       background: Container(
         color: theme.colorScheme.primary,
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: paddingEdges),
+        padding: const EdgeInsets.symmetric(horizontal: paddingEdges),
         child: const Icon(Icons.edit, color: Colors.white),
       ),
       secondaryBackground: Container(
@@ -56,22 +57,16 @@ class OverviewListTile extends StatelessWidget {
           await fetchItems();
 
           // Show a SnackBar with an undo option
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                localization.homePage_item_deletedItem(
-                  item.title,
-                ),
-              ),
-              action: SnackBarAction(
-                label: localization.homePage_item_undoDeleteItem,
-                onPressed: () async {
-                  // Reinsert the item into the database and refresh the list
-                  await dbHelper.insertItem(deletedItem);
-                  await fetchItems();
-                },
-              ),
-            ),
+          MessengerService().showMessage(
+            message: localization.homePage_item_deletedItem(item.title),
+            closeMessage: localization.generic_undo,
+            type: MessageType.success,
+            position: MessagePosition.bottom,
+            onClose: () async {
+              // Reinsert the item into the database and refresh the list
+              await dbHelper.insertItem(deletedItem);
+              await fetchItems();
+            },
           );
         }
       },
