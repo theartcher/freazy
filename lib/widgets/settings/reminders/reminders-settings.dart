@@ -70,6 +70,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
               localization.settingsPage_remindersSection_remindersDescription,
           onPress: () => context.push(ROUTE_REMINDERS_EDIT),
           trailing: const Icon(Icons.notifications),
+          disabled: !_UIareNotificationsEnabled,
         ),
         PressableSettingTile(
           onPress: selectTime,
@@ -78,8 +79,16 @@ class _ReminderSettingsState extends State<ReminderSettings> {
               .settingsPage_remindersSection_reminderTimeDescription,
           trailing: Text(
             _selectedReminderTime.format(context),
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: _UIareNotificationsEnabled
+                      ? null
+                      : Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.5),
+                ),
           ),
+          disabled: !_UIareNotificationsEnabled,
         ),
       ],
     );

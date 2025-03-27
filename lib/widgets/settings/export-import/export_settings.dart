@@ -18,106 +18,114 @@ class ExportSettings extends StatefulWidget {
 class _ExportSettingsState extends State<ExportSettings> {
   DatabaseBackup backup = DatabaseBackup();
 
-  Future<void> onPressExport() async {
-    BackupStates backupState = await backup.exportDatabaseToJson();
-    _sendExportMessage(backupState);
-  }
-
-  void _sendExportMessage(BackupStates state) {
-    switch (state) {
-      case BackupStates.succes:
-        MessengerService().showMessage(
-          message: 'Export successful',
-          type: MessageType.success,
-        );
-        break;
-
-      case BackupStates.userCancel:
-        MessengerService().showMessage(
-          message: 'The export was cancelled',
-          type: MessageType.info,
-        );
-        break;
-
-      case BackupStates.noItems:
-        MessengerService().showMessage(
-          message: 'You have no items to export.',
-          type: MessageType.info,
-        );
-        break;
-
-      case BackupStates.permissionsDenied:
-        MessengerService().showMessage(
-          message: 'Storage permission is required to export your items.',
-          type: MessageType.error,
-        );
-        break;
-
-      case BackupStates.unknownError:
-        MessengerService().showMessage(
-          message: 'An unknown error occurred during the export..',
-          type: MessageType.error,
-        );
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  void _sendImportMessage(BackupStates state) {
-    switch (state) {
-      case BackupStates.succes:
-        MessengerService().showMessage(
-          message: 'Import successful',
-          type: MessageType.success,
-        );
-        break;
-
-      case BackupStates.userCancel:
-        MessengerService().showMessage(
-          message: 'Import was cancelled',
-          type: MessageType.info,
-        );
-        break;
-
-      case BackupStates.noItems:
-        MessengerService().showMessage(
-          message: 'This import file has no items.',
-          type: MessageType.info,
-        );
-        break;
-
-      case BackupStates.permissionsDenied:
-        MessengerService().showMessage(
-          message: 'Storage permission is required to import your items.',
-          type: MessageType.error,
-        );
-        break;
-
-      case BackupStates.unknownError:
-        MessengerService().showMessage(
-          message: 'An unknown error occurred during the import..',
-          type: MessageType.error,
-        );
-        break;
-
-      default:
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
+
+    void sendExportMessage(BackupStates state) {
+      switch (state) {
+        case BackupStates.succes:
+          MessengerService().showMessage(
+            message:
+                localization.settingsPage_exportDatabase_exportDatabaseSuccess,
+            type: MessageType.success,
+          );
+          break;
+
+        case BackupStates.userCancel:
+          MessengerService().showMessage(
+            message: localization
+                .settingsPage_exportDatabase_exportDatabaseCancelled,
+            type: MessageType.error,
+          );
+          break;
+
+        case BackupStates.noItems:
+          MessengerService().showMessage(
+            message: localization.settingsPage_exportDatabase_exportNoItems,
+            type: MessageType.error,
+          );
+          break;
+
+        case BackupStates.permissionsDenied:
+          MessengerService().showMessage(
+            message: localization
+                .settingsPage_exportDatabase_exportStoragePermissionRequired,
+            type: MessageType.error,
+          );
+          break;
+
+        case BackupStates.unknownError:
+          MessengerService().showMessage(
+            message:
+                localization.settingsPage_exportDatabase_exportUnknownError,
+            type: MessageType.error,
+          );
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    void sendImportMessage(BackupStates state) {
+      switch (state) {
+        case BackupStates.succes:
+          MessengerService().showMessage(
+            message:
+                localization.settingsPage_exportDatabase_importDatabaseSuccess,
+            type: MessageType.success,
+          );
+          break;
+
+        case BackupStates.userCancel:
+          MessengerService().showMessage(
+            message: localization
+                .settingsPage_exportDatabase_importDatabaseCancelled,
+            type: MessageType.error,
+          );
+          break;
+
+        case BackupStates.noItems:
+          MessengerService().showMessage(
+            message: localization.settingsPage_exportDatabase_importNoItems,
+            type: MessageType.error,
+          );
+          break;
+
+        case BackupStates.permissionsDenied:
+          MessengerService().showMessage(
+            message: localization
+                .settingsPage_exportDatabase_importStoragePermissionRequired,
+            type: MessageType.error,
+          );
+          break;
+
+        case BackupStates.unknownError:
+          MessengerService().showMessage(
+            message:
+                localization.settingsPage_exportDatabase_importUnknownError,
+            type: MessageType.error,
+          );
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    Future<void> onPressExport() async {
+      BackupStates backupState = await backup.exportDatabaseToJson();
+      sendExportMessage(backupState);
+    }
 
     onConfirmImport(String selectedFilePath, bool clearExistingItems) async {
       BackupStates backupState = await backup.importDatabaseFromJson(
         filePath: selectedFilePath,
         removeExistingItem: clearExistingItems,
       );
-      _sendImportMessage(backupState);
+      sendImportMessage(backupState);
     }
 
     void showClearExistingItemsDialogue() async {
@@ -131,7 +139,7 @@ class _ExportSettingsState extends State<ExportSettings> {
       }
 
       if (selectedFilePath == null) {
-        _sendImportMessage(BackupStates.userCancel);
+        sendImportMessage(BackupStates.userCancel);
         return;
       }
 
@@ -143,14 +151,18 @@ class _ExportSettingsState extends State<ExportSettings> {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: const Text("Configure import "),
+                title: Text(
+                  localization.settingsPage_importDatabase_dialogueTitle,
+                ),
                 content: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                          "Select whether or not to keep existing items."),
+                      Text(
+                        localization
+                            .settingsPage_importDatabase_dialogueDescription,
+                      ),
                       Row(
                         children: [
                           Checkbox(
@@ -161,8 +173,11 @@ class _ExportSettingsState extends State<ExportSettings> {
                               });
                             },
                           ),
-                          const Expanded(
-                            child: Text("Clear existing items"),
+                          Expanded(
+                            child: Text(
+                              localization
+                                  .settingsPage_importDatabase_dialogueRemoveExistingItems,
+                            ),
                           ),
                         ],
                       ),
@@ -171,7 +186,7 @@ class _ExportSettingsState extends State<ExportSettings> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text("Cancel"),
+                    child: Text(localization.generic_cancel),
                     onPressed: () {
                       //Single pop to kill dialogue only.
                       Navigator.of(context).pop();
@@ -189,7 +204,8 @@ class _ExportSettingsState extends State<ExportSettings> {
                       Navigator.of(context).pop(true);
                     },
                     child: Text(
-                      "Import",
+                      localization
+                          .settingsPage_importDatabase_dialogueImportConfirmation,
                       style: TextStyle(
                         color: theme.colorScheme.primary,
                       ),

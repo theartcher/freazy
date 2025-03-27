@@ -43,9 +43,8 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           const PersonalizationSetting(),
           const Divider(),
-          // TODO: localisation
-          const SettingHeader(
-            text: "Import & Exports",
+          SettingHeader(
+            text: localization.settingsPage_exportImportSection_header,
           ),
           const ExportSettings(),
           const Divider(),

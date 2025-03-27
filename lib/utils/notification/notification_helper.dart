@@ -1,9 +1,10 @@
+import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/models/reminder.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
+import 'package:freazy/utils/notification/notification_localization.dart';
 import 'package:freazy/utils/settings/preferences_manager.dart';
-import 'package:intl/intl.dart';
 
 class NotificationHelper {
   Future<bool> sendNotifications() async {
@@ -29,7 +30,9 @@ class NotificationHelper {
     if (itemsToNotifyAbout.isEmpty) return true;
 
     //Format the notification string.
-    String notificationString = _formatNotificationString(itemsToNotifyAbout);
+    Locale locale = await PreferencesManager.loadLocale();
+    String notificationString =
+        await _formatNotificationString(itemsToNotifyAbout, locale);
 
     //TODO: Define a proper channel for this
     AwesomeNotifications().createNotification(
@@ -37,7 +40,7 @@ class NotificationHelper {
       id: 10,
       channelKey: 'basic_channel',
       actionType: ActionType.Default,
-      title: 'Check binnenkort de vriezer',
+      title: NotificationLocalizationHelper().getTitle(locale),
       body: notificationString,
     ));
 
@@ -46,20 +49,37 @@ class NotificationHelper {
   }
 
   /// Private method to formulate the string to be displayed in the notification.
-  String _formatNotificationString(List<Item> items) {
+  Future<String> _formatNotificationString(
+    List<Item> items,
+    Locale locale,
+  ) async {
+    var notificationLocalization = NotificationLocalizationHelper();
+
     if (items.isEmpty) {
-      return 'Something went REALLY wrong if you receive this notification. Please contact us.';
+      return notificationLocalization.getUnexpectedError(locale);
     }
 
     if (items.length == 1) {
-      return 'Uw product ${items.first.title} gaat op ${DateFormat("yyyy-MM-dd").format(items.first.expirationDate)} over de datum.';
+      return notificationLocalization.getSingleItemNotification(
+        locale,
+        items.first.title,
+        items.first.expirationDate,
+      );
     }
 
     if (items.length > 1 && items.length <= 3) {
-      return 'De volgende producten gaan binnenkort over de datum: ${items.first.title}, ${items[1].title} en ${items[2].title}.';
+      return notificationLocalization.getThreeItemNotification(
+        locale,
+        items[0].title,
+        items[1].title,
+        items[2].title,
+      );
     }
 
-    return 'Er zijn ${items.length} producten die binnenkort over de datum zijn.';
+    return notificationLocalization.getMultipleItemNotification(
+      locale,
+      items.length,
+    );
   }
 
   /// Private method to filter items that should be notified about

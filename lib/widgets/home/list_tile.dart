@@ -22,6 +22,25 @@ class OverviewListTile extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
     const paddingEdges = 18.0;
 
+    deleteCurrentItem() async {
+      final deletedItem = item;
+      await dbHelper.delete(item.id!);
+      await fetchItems();
+
+      // Show a SnackBar with an undo option
+      MessengerService().showMessage(
+        message: localization.homePage_item_deletedItem(item.title),
+        closeMessage: localization.generic_undo,
+        type: MessageType.success,
+        position: MessagePosition.bottom,
+        onClose: () async {
+          // Reinsert the item into the database and refresh the list
+          await dbHelper.insertItem(deletedItem);
+          await fetchItems();
+        },
+      );
+    }
+
     return Dismissible(
       key: Key(item.id.toString()),
       background: Container(
@@ -51,23 +70,7 @@ class OverviewListTile extends StatelessWidget {
       },
       onDismissed: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          // Handle deletion
-          final deletedItem = item;
-          await dbHelper.delete(item.id!);
-          await fetchItems();
-
-          // Show a SnackBar with an undo option
-          MessengerService().showMessage(
-            message: localization.homePage_item_deletedItem(item.title),
-            closeMessage: localization.generic_undo,
-            type: MessageType.success,
-            position: MessagePosition.bottom,
-            onClose: () async {
-              // Reinsert the item into the database and refresh the list
-              await dbHelper.insertItem(deletedItem);
-              await fetchItems();
-            },
-          );
+          deleteCurrentItem();
         }
       },
       child: ListTile(
@@ -85,9 +88,11 @@ class OverviewListTile extends StatelessWidget {
               width: 8,
             ),
             if (DateTime.now().isAfter(item.expirationDate))
-              Text(
-                localization.homePage_item_expiredAttribute,
-                style: TextStyle(color: theme.colorScheme.error),
+              Expanded(
+                child: Text(
+                  localization.homePage_item_expiredAttribute,
+                  style: TextStyle(color: theme.colorScheme.error),
+                ),
               )
           ],
         ),
@@ -102,17 +107,31 @@ class OverviewListTile extends StatelessWidget {
             item.category,
           ),
         ),
-        trailing: IconButton(
-          icon: Icon(
-            Icons.edit,
-            color: theme.colorScheme.primary,
-          ),
-          onPressed: () async {
-            final result = await context.push(ROUTE_ITEM_EDIT, extra: item);
-            if (result == true) {
-              await fetchItems();
-            }
-          },
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: theme.colorScheme.primary,
+              ),
+              onPressed: () async {
+                final result = await context.push(ROUTE_ITEM_EDIT, extra: item);
+                if (result == true) {
+                  await fetchItems();
+                }
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: theme.colorScheme.error,
+              ),
+              onPressed: () async {
+                deleteCurrentItem();
+              },
+            ),
+          ],
         ),
       ),
     );
