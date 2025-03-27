@@ -25,7 +25,7 @@ class MessengerService {
     String? closeMessage,
     MessagePosition position = MessagePosition.bottom,
     MessageType type = MessageType.info,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = const Duration(seconds: 60),
     VoidCallback? onClose,
   }) {
     final context = messengerKey.currentContext!;
@@ -68,6 +68,7 @@ class MessengerService {
           ),
         ],
       ),
+      actionOverflowThreshold: 0.5,
       backgroundColor: _getBackgroundColor(type),
       duration: duration,
       behavior: SnackBarBehavior.floating,
