@@ -40,13 +40,18 @@ class _DateInputState extends State<DateInput> {
   void initState() {
     super.initState();
     _selectedDate = widget.initialDate;
-    textController.text = _formatDate(_selectedDate);
   }
 
   @override
   void dispose() {
     textController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    textController.text = _formatDate(_selectedDate);
   }
 
   String _formatDate(DateTime date) {

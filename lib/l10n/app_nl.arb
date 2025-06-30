@@ -354,5 +354,9 @@
   "generic_openSettings": "Instellingen openen",
   "@generic_openSettings": {
     "description": "Generic text to open the settings page."
+  },
+  "generic_unknownError": "Er is iets compleet mis gegaan, neem s.v.p. contact op met de developers (Freazy on GitHub).",
+  "@generic_unknownError": {
+    "description": "The error shown when something unexpected happens logic wise that can't be solved in a clean manner."
   }
 }

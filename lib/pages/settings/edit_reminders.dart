@@ -55,7 +55,7 @@ class _EditNotificationsPageState extends State<EditNotificationsPage> {
     Future<bool> isValid(List<Reminder> reminders) async {
       var locale = await PreferencesManager.loadLocale();
       var errors = await ReminderValidator.validate(
-        _reminders,
+        reminders,
         context,
         locale,
       );

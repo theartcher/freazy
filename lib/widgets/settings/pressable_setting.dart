@@ -5,7 +5,7 @@ class PressableSettingTile extends StatelessWidget {
   final String? description;
   final Widget? trailing;
   final Color? color;
-  final Function? onPress;
+  final VoidCallback? onPress;
   final bool disabled;
 
   const PressableSettingTile({
@@ -26,7 +26,7 @@ class PressableSettingTile extends StatelessWidget {
 
     return ListTile(
       enabled: !disabled,
-      onTap: disabled ? null : (onPress != null ? () => onPress!() : null),
+      onTap: disabled ? null : onPress,
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(

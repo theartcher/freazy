@@ -40,16 +40,15 @@ void main() async {
   AwesomeNotifications().initialize(
     null,
     [notificationChannelConfig],
-    debug: true,
   );
 
   Workmanager().initialize(
     callbackDispatcher,
-    isInDebugMode: true,
   );
 
   BackgroundManager.scheduleReminder(
-      policyOnExistingSchedule: ExistingWorkPolicy.keep);
+    policyOnExistingSchedule: ExistingWorkPolicy.keep,
+  );
 
   ThemeMode themeMode = await PreferencesManager.loadThemeMode();
   Locale locale = await PreferencesManager.loadLocale();
@@ -106,7 +105,7 @@ class _MainAppState extends State<MainApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         enLocale, // English US
         nlLocale, // Dutch
       ],

@@ -32,6 +32,8 @@ class DatabaseBackup {
     List<Item> itemsToImport =
         jsonList.map((item) => Item.fromJson(item)).toList();
 
+    itemsToImport = removeInvalidItems(itemsToImport);
+
     if (removeExistingItem) {
       await dbHelper.deleteAndRecreateDatabase();
     }

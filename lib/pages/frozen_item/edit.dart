@@ -68,10 +68,12 @@ class _EditItemPageState extends State<EditItemPage> {
       selectedItem.id = widget.item.id;
       await _dbHelper.updateItem(selectedItem);
 
-      store.clearItem();
-      _formKey.currentState!.reset();
       // ignore: use_build_context_synchronously
       context.pop(true);
+      store.clearItem();
+      _formKey.currentState!.reset();
+
+      MessengerService().clearCurrentMessage();
     } else {
       setState(() {
         _isLoading = false;
@@ -88,9 +90,6 @@ class _EditItemPageState extends State<EditItemPage> {
     void exitWithoutSaving() {
       if (store.isDirty) {
         if (!_confirmExit) {
-          setState(() {
-            _confirmExit = true;
-          });
           MessengerService().showMessage(
             message: localization.itemConfig_generic_exitWithoutSaving,
             type: MessageType.info,
@@ -103,6 +102,11 @@ class _EditItemPageState extends State<EditItemPage> {
               exitWithoutSaving();
             },
           );
+
+          setState(() {
+            _confirmExit = true;
+          });
+
           return;
         }
       }
@@ -132,8 +136,9 @@ class _EditItemPageState extends State<EditItemPage> {
               : IconButton(
                   icon: const Icon(Icons.check),
                   onPressed: () {
-                    _formKey.currentState!.validate();
-                    exitWithSaving();
+                    if (_formKey.currentState!.validate()) {
+                      exitWithSaving();
+                    }
                   },
                 )
         ],

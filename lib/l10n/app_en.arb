@@ -354,5 +354,9 @@
   "generic_openSettings": "Open settings",
   "@generic_openSettings": {
     "description": "Generic text to open the settings page."
+  },
+  "generic_unknownError": "Something went terribly wrong, please contact the developers (Freazy on GitHub).",
+  "@generic_unknownError": {
+    "description": "The error shown when something unexpected happens logic wise that can't be solved in a clean manner."
   }
 }

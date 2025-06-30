@@ -1,4 +1,4 @@
 import 'dart:ui';
 
-var enLocale = const Locale('en');
-var nlLocale = const Locale('nl');
+const enLocale = Locale('en');
+const nlLocale = Locale('nl');
