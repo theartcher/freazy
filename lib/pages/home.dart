@@ -8,7 +8,7 @@ import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:freazy/utils/home/search_helper.dart';
 import 'package:freazy/utils/home/sorting_helper.dart';
 import 'package:freazy/widgets/home/list_tile.dart';
-import 'package:freazy/widgets/sort_items.dart';
+import 'package:freazy/widgets/home/sort_items.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
