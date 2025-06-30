@@ -72,14 +72,13 @@ class _EditItemPageState extends State<EditItemPage> {
       await _dbHelper.updateItem(selectedItem);
 
       store.clearItem();
+      _formKey.currentState!.reset();
       // ignore: use_build_context_synchronously
       context.pop(true);
     } else {
       setState(() {
         _isLoading = false;
       });
-
-      _formKey.currentState!.reset();
     }
   }
 
@@ -108,7 +107,10 @@ class _EditItemPageState extends State<EditItemPage> {
                 )
               : IconButton(
                   icon: const Icon(Icons.check),
-                  onPressed: () => exitWithSaving(),
+                  onPressed: () {
+                    _formKey.currentState!.validate();
+                    exitWithSaving();
+                  },
                 )
         ],
       ),

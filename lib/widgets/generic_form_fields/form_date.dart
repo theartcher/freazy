@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freazy/widgets/generic_form_fields/date_input_formatter.dart';
+import 'package:freazy/main.dart';
 import 'package:intl/intl.dart';
 
 class DateInput extends StatefulWidget {
@@ -12,7 +12,6 @@ class DateInput extends StatefulWidget {
   final String label;
   final IconData icon;
   final DateTime initialDate;
-  final Locale? locale;
 
   const DateInput({
     super.key,
@@ -25,7 +24,6 @@ class DateInput extends StatefulWidget {
     required this.label,
     required this.icon,
     required this.initialDate,
-    this.locale,
   });
 
   @override
@@ -37,7 +35,6 @@ class _DateInputState extends State<DateInput> {
   final TextEditingController textController = TextEditingController();
   late DateTime _selectedDate;
   bool _enabled = true;
-  Locale _selectedLocale = Locale("en");
 
   @override
   void initState() {
@@ -53,7 +50,9 @@ class _DateInputState extends State<DateInput> {
   }
 
   String _formatDate(DateTime date) {
-    return DateFormat.yMd(_selectedLocale.countryCode).format(date);
+    return DateFormat.yMd(
+      MainApp.of(context).selectedLocale.languageCode,
+    ).format(date);
   }
 
   Future<void> _selectDate(BuildContext context) async {

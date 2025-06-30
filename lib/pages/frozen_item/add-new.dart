@@ -67,14 +67,13 @@ class _AddItemPageState extends State<AddItemPage> {
       await _dbHelper.insertItem(selectedItem);
 
       store.clearItem();
+      _formKey.currentState!.reset();
       // ignore: use_build_context_synchronously
       context.pop(true);
     } else {
       setState(() {
         _isLoading = false;
       });
-
-      _formKey.currentState!.reset();
     }
   }
 
