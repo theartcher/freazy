@@ -15,6 +15,7 @@ class FrozenItemStore with ChangeNotifier {
   num _weight = 0;
   DateTime _freezeDate = DateTime.now();
   DateTime _expirationDate = DateTime.now().add(const Duration(days: 14));
+  bool _isDirty = false;
 
   int? get id => _id ?? -1;
   String get title => _title;
@@ -24,6 +25,7 @@ class FrozenItemStore with ChangeNotifier {
   num get weight => _weight;
   DateTime get freezeDate => _freezeDate;
   DateTime get expirationDate => _expirationDate;
+  bool get isDirty => _isDirty;
 
   void clearItem() {
     _id = -1;
@@ -34,6 +36,8 @@ class FrozenItemStore with ChangeNotifier {
     _weight = 0;
     _freezeDate = DateTime.now();
     _expirationDate = DateTime.now().add(const Duration(days: 14));
+
+    _isDirty = false;
 
     notifyListeners();
   }
@@ -60,47 +64,72 @@ class FrozenItemStore with ChangeNotifier {
     _weight = item.weight;
     _freezeDate = item.freezeDate;
     _expirationDate = item.expirationDate;
+    _isDirty = false;
 
     notifyListeners();
   }
 
   void setId(int id) {
-    _id = id;
-    notifyListeners();
+    if (_id != id) {
+      _id = id;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setTitle(String title) {
-    _title = title;
-    notifyListeners();
+    if (_title != title) {
+      _title = title;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setFreezer(String freezer) {
-    _freezer = freezer;
-    notifyListeners();
+    if (_freezer != freezer) {
+      _freezer = freezer;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setCategory(String category) {
-    _category = category;
-    notifyListeners();
+    if (_category != category) {
+      _category = category;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setWeight(num weight) {
-    _weight = weight;
-    notifyListeners();
+    if (_weight != weight) {
+      _weight = weight;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setWeightUnit(String weightUnit) {
-    _weightUnit = weightUnit;
-    notifyListeners();
+    if (_weightUnit != weightUnit) {
+      _weightUnit = weightUnit;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setFreezerDate(DateTime freezeDate) {
-    _freezeDate = freezeDate;
-    notifyListeners();
+    if (_freezeDate != freezeDate) {
+      _freezeDate = freezeDate;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 
   void setExpirationDate(DateTime expirationDate) {
-    _expirationDate = expirationDate;
-    notifyListeners();
+    if (_expirationDate != expirationDate) {
+      _expirationDate = expirationDate;
+      _isDirty = true;
+      notifyListeners();
+    }
   }
 }

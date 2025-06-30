@@ -10,6 +10,7 @@ import 'package:freazy/widgets/frozen_item_fields/freezer.dart';
 import 'package:freazy/widgets/frozen_item_fields/title.dart';
 import 'package:freazy/widgets/frozen_item_fields/weight-unit.dart';
 import 'package:freazy/widgets/frozen_item_fields/weight.dart';
+import 'package:freazy/widgets/messenger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
@@ -37,6 +38,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
   ItemAutoCompleteSuggestions suggestions = ItemAutoCompleteSuggestions.empty();
   bool _isLoading = false;
+  bool _confirmExit = false;
 
   @override
   void initState() {
@@ -52,11 +54,6 @@ class _EditItemPageState extends State<EditItemPage> {
     setState(() {
       suggestions = existingSuggestions;
     });
-  }
-
-  void exitWithoutSaving() {
-    store.clearItem();
-    context.pop();
   }
 
   Future<void> exitWithSaving() async {
@@ -87,6 +84,33 @@ class _EditItemPageState extends State<EditItemPage> {
     final theme = Theme.of(context);
     store = Provider.of<FrozenItemStore>(context);
     final localization = AppLocalizations.of(context)!;
+
+    void exitWithoutSaving() {
+      if (store.isDirty) {
+        if (!_confirmExit) {
+          setState(() {
+            _confirmExit = true;
+          });
+          MessengerService().showMessage(
+            message: localization.itemConfig_generic_exitWithoutSaving,
+            type: MessageType.info,
+            closeMessage: localization.generic_confirm,
+            duration: const Duration(seconds: 10),
+            onClose: () {
+              setState(() {
+                _confirmExit = true;
+              });
+              exitWithoutSaving();
+            },
+          );
+          return;
+        }
+      }
+
+      MessengerService().clearCurrentMessage();
+      store.clearItem();
+      context.pop();
+    }
 
     return Scaffold(
       appBar: AppBar(

@@ -319,6 +319,10 @@
   "@itemConfig_generic_expirationDateTitle": {
     "description": "text"
   },
+  "itemConfig_generic_exitWithoutSaving": "You have pending changes, are you sure you want to leave without saving?",
+  "@itemConfig_generic_exitWithoutSaving": {
+    "description": "The text shown when the user tries to leave the item configuration page without saving changes."
+  },
   "itemConfig_edit_headerTitle": "Edit product",
   "@itemConfig_edit_headerTitle": {
     "description": "text"

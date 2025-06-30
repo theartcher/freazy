@@ -45,6 +45,13 @@ class MessengerService {
     );
   }
 
+  void clearCurrentMessage() {
+    final messenger = messengerKey.currentState;
+    if (messenger == null) return;
+
+    messenger.hideCurrentSnackBar();
+  }
+
   void _showSnackBar({
     required String message,
     required MessageType type,

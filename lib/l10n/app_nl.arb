@@ -319,6 +319,10 @@
   "@itemConfig_generic_expirationDateTitle": {
     "description": "text"
   },
+  "itemConfig_generic_exitWithoutSaving": "U verlaat de pagina zonder wijzigingen op te slaan. Weet u het zeker?",
+  "@itemConfig_generic_exitWithoutSaving": {
+    "description": "The text shown when the user tries to leave the item configuration page without saving changes."
+  },
   "itemConfig_edit_headerTitle": "Product bewerken",
   "@itemConfig_edit_headerTitle": {
     "description": "text"
