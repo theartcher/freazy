@@ -331,6 +331,10 @@
   "@itemConfig_create_headerTitle": {
     "description": "text"
   },
+  "itemConfig_create_scanCancelledOrFailed": "Product scan is geannuleerd of geweigerd.",
+  "@itemConfig_create_scanCancelledOrFailed": {
+    "description": "The text shown in the info message that a product barcode scan was unsuccessful."
+  },
   "generic_cancel": "Annuleren",
   "@generic_cancel": {
     "description": "Generic cancel text on pop-ups and menus, meaning to exit without making changes."

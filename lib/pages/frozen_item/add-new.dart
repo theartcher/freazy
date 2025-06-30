@@ -16,6 +16,7 @@ import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({super.key});
@@ -36,6 +37,7 @@ class _AddItemPageState extends State<AddItemPage> {
   ItemAutoCompleteSuggestions suggestions = ItemAutoCompleteSuggestions.empty();
   bool _isLoading = false;
   bool _confirmExit = false;
+  String scannedBarcode = "I HAVE NOTHIIIIIIING";
 
   @override
   void initState() {
@@ -129,8 +131,44 @@ class _AddItemPageState extends State<AddItemPage> {
               : IconButton(
                   icon: const Icon(Icons.check),
                   onPressed: () => exitWithSaving(),
-                )
+                ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
+        onPressed: () async {
+          String? rawScanResult = await SimpleBarcodeScanner.scanBarcode(
+            context,
+            barcodeAppBar: const BarcodeAppBar(
+              appBarTitle: 'Scanner',
+              centerTitle: false,
+              enableBackButton: true,
+              backButtonIcon: Icon(
+                Icons.arrow_back,
+              ),
+            ),
+            cancelButtonText: localization.generic_cancel,
+            scanFormat: ScanFormat.ONLY_BARCODE,
+            isShowFlashIcon: true,
+            delayMillis: 2000,
+            cameraFace: CameraFace.back,
+          );
+
+          if (rawScanResult == "-1" || rawScanResult == null) {
+            MessengerService().showMessage(
+              message: localization.itemConfig_create_scanCancelledOrFailed,
+              type: MessageType.info,
+              duration: const Duration(seconds: 5),
+            );
+            return;
+          }
+
+          setState(() {
+            scannedBarcode = rawScanResult;
+          });
+        },
+        child: const Icon(Icons.barcode_reader),
       ),
       body: FutureBuilder<void>(
         future: _initializeFuture,
@@ -153,6 +191,7 @@ class _AddItemPageState extends State<AddItemPage> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
+                  Text(scannedBarcode),
                   ItemTitle(
                     suggestions: suggestions,
                     focusHelper: _focusHelper,
