@@ -99,6 +99,10 @@
   "@settingsPage_remindersSection_notificationDescription": {
     "description": "Description of the checkbox to toggle notifications."
   },
+  "settingsPage_remindersSection_permissionDenied": "We need notification permissions to send you your reminders!",
+  "@settingsPage_remindersSection_permissionDenied": {
+    "description": "The error message shown when the user has denied notification permissions."
+  },
   "settingsPage_remindersSection_remindersTitle": "Manage reminders",
   "@settingsPage_remindersSection_remindersTitle": {
     "description": "The title text of setting to manage reminders."
@@ -227,7 +231,7 @@
   "@settingsPage_importDatabase_dialogueTitle": {
     "description": "The title of the file import option picker dialogue."
   },
-  "settingsPage_importDatabase_dialogueDescription": "Select whether or not to keep existing items?",
+  "settingsPage_importDatabase_dialogueDescription": "Would you like to clear existing items before importing?",
   "@settingsPage_importDatabase_dialogueDescription": {
     "description": "The description of the file import option picker dialogue."
   },
@@ -342,5 +346,9 @@
   "generic_undo": "Undo",
   "@generic_undo": {
     "description": "Generic undo text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_openSettings": "Open settings",
+  "@generic_openSettings": {
+    "description": "Generic text to open the settings page."
   }
 }

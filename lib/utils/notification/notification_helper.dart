@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:freazy/constants/constants.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/models/reminder.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
@@ -34,11 +35,10 @@ class NotificationHelper {
     String notificationString =
         await _formatNotificationString(itemsToNotifyAbout, locale);
 
-    //TODO: Define a proper channel for this
     AwesomeNotifications().createNotification(
         content: NotificationContent(
       id: 10,
-      channelKey: 'basic_channel',
+      channelKey: FREAZY_NOTIFICATION_CHANNEL_KEY,
       actionType: ActionType.Default,
       title: NotificationLocalizationHelper().getTitle(locale),
       body: notificationString,

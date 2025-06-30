@@ -1,11 +1,12 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:freazy/constants/constants.dart';
 import 'package:freazy/utils/background_manager.dart';
 import 'package:freazy/utils/settings/preferences_manager.dart';
+import 'package:freazy/widgets/messenger.dart';
 import 'package:freazy/widgets/settings/pressable_setting.dart';
 import 'package:freazy/widgets/settings/toggle_switch_setting.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,7 +18,7 @@ class ReminderSettings extends StatefulWidget {
 }
 
 class _ReminderSettingsState extends State<ReminderSettings> {
-  bool _UIareNotificationsEnabled = false;
+  bool UIareNotificationsEnabled = false;
   TimeOfDay _selectedReminderTime = TimeOfDay.now();
 
   @override
@@ -55,14 +56,67 @@ class _ReminderSettingsState extends State<ReminderSettings> {
       }
     }
 
+    void notifyAboutPermissionProblems() {
+      MessengerService().showMessage(
+        message: localization.settingsPage_remindersSection_permissionDenied,
+        type: MessageType.error,
+        closeMessage: localization.generic_openSettings,
+        onClose: () => openAppSettings(),
+        duration: const Duration(seconds: 15),
+      );
+    }
+
+    void toggleNotifications(bool enable) async {
+      // Check current notification permission status
+      var status = await Permission.notification.status;
+
+      if (enable) {
+        // If permission is not granted, request it
+        if (!status.isGranted) {
+          // Handle permanently denied: guide user to settings
+          if (status.isPermanentlyDenied) {
+            notifyAboutPermissionProblems();
+            setState(() {
+              UIareNotificationsEnabled = false;
+            });
+            await PreferencesManager.saveReceiveNotifications(false);
+            return;
+          }
+
+          // Request permission
+          var requestStatus = await Permission.notification.request();
+
+          if (!requestStatus.isGranted) {
+            notifyAboutPermissionProblems();
+            setState(() {
+              UIareNotificationsEnabled = false;
+            });
+            await PreferencesManager.saveReceiveNotifications(false);
+            return;
+          }
+        }
+        // Permission granted
+        await PreferencesManager.saveReceiveNotifications(true);
+        setState(() {
+          UIareNotificationsEnabled = true;
+        });
+      } else {
+        // User turned notifications off
+        setState(() {
+          UIareNotificationsEnabled = false;
+        });
+        await PreferencesManager.saveReceiveNotifications(false);
+      }
+    }
+
     return Column(
       children: [
         ToggleSwitchSetting(
           title: localization.settingsPage_remindersSection_notificationTitle,
           description: localization
               .settingsPage_remindersSection_notificationDescription,
-          isToggled: _UIareNotificationsEnabled,
-          changeValue: _toggleNotifications,
+          isToggled: UIareNotificationsEnabled,
+          changeValue: toggleNotifications,
         ),
         PressableSettingTile(
           title: localization.settingsPage_remindersSection_remindersTitle,
@@ -70,7 +124,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
               localization.settingsPage_remindersSection_remindersDescription,
           onPress: () => context.push(ROUTE_REMINDERS_EDIT),
           trailing: const Icon(Icons.notifications),
-          disabled: !_UIareNotificationsEnabled,
+          disabled: !UIareNotificationsEnabled,
         ),
         PressableSettingTile(
           onPress: selectTime,
@@ -80,7 +134,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
           trailing: Text(
             _selectedReminderTime.format(context),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: _UIareNotificationsEnabled
+                  color: UIareNotificationsEnabled
                       ? null
                       : Theme.of(context)
                           .colorScheme
@@ -88,7 +142,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
                           .withOpacity(0.5),
                 ),
           ),
-          disabled: !_UIareNotificationsEnabled,
+          disabled: !UIareNotificationsEnabled,
         ),
       ],
     );
@@ -100,36 +154,7 @@ class _ReminderSettingsState extends State<ReminderSettings> {
         await PreferencesManager.loadReceiveNotifications();
     setState(() {
       _selectedReminderTime = time;
-      _UIareNotificationsEnabled = enableNotifications;
-    });
-  }
-
-  void _toggleNotifications(bool toggleEnableNotifications) async {
-    //If the user is trying to enable notifications, check and show prompt for permissions.
-    var permissionAlreadyGranted =
-        await AwesomeNotifications().isNotificationAllowed();
-    var permissionRequestSuccess = false;
-
-    //If notification permission has already been granted, don't request.
-    if (!permissionAlreadyGranted) {
-      permissionRequestSuccess =
-          await AwesomeNotifications().requestPermissionToSendNotifications();
-    }
-
-    //If notification permission isn't already allowed, nor is allowed by the pop-up. Do not toggle the switch in UI and cancel entire request.
-    //TODO: Add notification that permissions have been denied
-    if (!permissionRequestSuccess && !permissionAlreadyGranted) {
-      setState(() {
-        _UIareNotificationsEnabled = false;
-      });
-      return;
-    }
-
-    await PreferencesManager.saveReceiveNotifications(
-        toggleEnableNotifications);
-
-    setState(() {
-      _UIareNotificationsEnabled = toggleEnableNotifications;
+      UIareNotificationsEnabled = enableNotifications;
     });
   }
 }

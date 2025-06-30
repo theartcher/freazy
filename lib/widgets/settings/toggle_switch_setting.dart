@@ -41,15 +41,12 @@ class ToggleSwitchSetting extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Switch(
-              value: isToggled,
-              activeColor: theme.colorScheme.primary,
-              activeTrackColor: theme.colorScheme.primaryContainer,
-              inactiveThumbColor: theme.colorScheme.onSurfaceVariant,
-              onChanged: changeValue,
-            ),
+          Switch(
+            value: isToggled,
+            activeColor: theme.colorScheme.primary,
+            activeTrackColor: theme.colorScheme.primaryContainer,
+            inactiveThumbColor: theme.colorScheme.onSurfaceVariant,
+            onChanged: changeValue,
           ),
         ],
       ),

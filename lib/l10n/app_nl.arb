@@ -99,7 +99,11 @@
   "@settingsPage_remindersSection_notificationDescription": {
     "description": "Description of the checkbox to toggle notifications."
   },
-  "settingsPage_remindersSection_remindersTitle": "Herinerringen aanpassen",
+  "settingsPage_remindersSection_permissionDenied": "U heeft toestemming tot uw notificaties geweigerd, u kunt dit in de instelling aanpassen.",
+  "@settingsPage_remindersSection_permissionDenied": {
+    "description": "The error message shown when the user has denied notification permissions."
+  },
+  "settingsPage_remindersSection_remindersTitle": "Herinnerringen aanpassen",
   "@settingsPage_remindersSection_remindersTitle": {
     "description": "The title text of setting to manage reminders."
   },
@@ -342,5 +346,9 @@
   "generic_undo": "Ongedaan maken",
   "@generic_undo": {
     "description": "Generic undo text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_openSettings": "Instellingen openen",
+  "@generic_openSettings": {
+    "description": "Generic text to open the settings page."
   }
 }
