@@ -46,6 +46,8 @@ class ItemDatabaseHelper {
     await databaseFactory.deleteDatabase(path);
   }
 
+// #region CRUD item database operations
+
   Future<void> insertItem(Item item) async {
     final db = await database;
 
@@ -54,6 +56,18 @@ class ItemDatabaseHelper {
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.rollback,
     );
+  }
+
+  Future<void> insertItems(List<Item> items) async {
+    final db = await database;
+    final batch = db.batch();
+
+    for (Item item in items) {
+      item.id = null;
+      batch.insert(_table, item.toMap());
+    }
+
+    await batch.commit();
   }
 
   Future<Item?> getItem(int id) async {
@@ -98,6 +112,10 @@ class ItemDatabaseHelper {
 
     return itemMap.map((map) => Item.fromMap(map)).toList();
   }
+
+// #endregion
+
+// #region Autocomplete suggestions
 
   Future<List<String>> fetchExistingTitles() async {
     final db = await database;
@@ -180,4 +198,6 @@ class ItemDatabaseHelper {
 
     return mostCommonFreezer ?? 'g';
   }
+
+// #endregion
 }

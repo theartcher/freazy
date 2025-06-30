@@ -1,19 +1,31 @@
+import 'dart:ui';
+
+import 'package:freazy/constants/locales.dart';
+
 enum ReminderType { week, day }
 
 extension ReminderTypeLabel on ReminderType {
-  String get label {
+  String label(Locale locale) {
     switch (this) {
       case ReminderType.week:
-        return "weken";
+        if (locale == nlLocale) {
+          return "weken";
+        } else {
+          return "weeks";
+        }
       case ReminderType.day:
-        return "dagen";
+        if (locale == nlLocale) {
+          return "dagen";
+        } else {
+          return "days";
+        }
     }
   }
 }
 
 class Reminder {
-  ReminderType type; // Enum for "week" or "day"
-  int amount; // Amount of weeks or days
+  ReminderType type;
+  int amount;
 
   Reminder({
     required this.type,
@@ -28,7 +40,7 @@ class Reminder {
   /// Convert object to a map
   Map<String, Object?> toMap() {
     return {
-      'type': type.name, // Use `.name` to store as a String
+      'type': type.name,
       'amount': amount,
     };
   }

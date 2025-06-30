@@ -99,6 +99,10 @@
   "@settingsPage_remindersSection_notificationDescription": {
     "description": "Description of the checkbox to toggle notifications."
   },
+  "settingsPage_remindersSection_permissionDenied": "We need notification permissions to send you your reminders!",
+  "@settingsPage_remindersSection_permissionDenied": {
+    "description": "The error message shown when the user has denied notification permissions."
+  },
   "settingsPage_remindersSection_remindersTitle": "Manage reminders",
   "@settingsPage_remindersSection_remindersTitle": {
     "description": "The title text of setting to manage reminders."
@@ -171,6 +175,82 @@
   "@settingsPage_resetApp_checkboxAcceptConsequences": {
     "description": "The elaboration of the checkbox, explaining the users accepts all consequences."
   },
+  "settingsPage_exportImportSection_header": "Backup & Restore",
+  "@settingsPage_exportImportSection_header": {
+    "description": "The title of the backup & restore section."
+  },
+  "settingsPage_exportDatabase_exportDatabaseTitle": "Export backup",
+  "@settingsPage_exportDatabase_exportDatabaseTitle": {
+    "description": "The title of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_exportDatabase_exportDatabaseDescription": "Export your database to a file.",
+  "@settingsPage_exportDatabase_exportDatabaseDescription": {
+    "description": "The description of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_exportDatabase_exportDatabaseSuccess": "Export successful.",
+  "@settingsPage_exportDatabase_exportDatabaseSuccess": {
+    "description": "The notification shown after exporting the database."
+  },
+  "settingsPage_exportDatabase_exportDatabaseCancelled": "The export was cancelled.",
+  "@settingsPage_exportDatabase_exportDatabaseCancelled": {
+    "description": "The notification shown after cancelling the exporting of the database."
+  },
+  "settingsPage_exportDatabase_exportNoItems": "You have no items to export.",
+  "@settingsPage_exportDatabase_exportNoItems": {
+    "description": "The notification shown when there are no items to export."
+  },
+  "settingsPage_exportDatabase_exportStoragePermissionRequired": "Storage permission required to export your items",
+  "@settingsPage_exportDatabase_exportStoragePermissionRequired": {
+    "description": "The notification shown when the app requires storage permission to export the database."
+  },
+  "settingsPage_exportDatabase_exportUnknownError": "An unknown error occurred during the export...",
+  "@settingsPage_exportDatabase_exportUnknownError": {
+    "description": "The notification shown when an unknown error occurs during the export of the database."
+  },
+  "settingsPage_exportDatabase_importDatabaseSuccess": "Import successful.",
+  "@settingsPage_exportDatabase_importDatabaseSuccess": {
+    "description": "The notification shown after importing the database."
+  },
+  "settingsPage_exportDatabase_importDatabaseCancelled": "The import was cancelled.",
+  "@settingsPage_exportDatabase_importDatabaseCancelled": {
+    "description": "The notification shown after cancelling the importing of the database."
+  },
+  "settingsPage_exportDatabase_importNoItems": "No items found in the backup file.",
+  "@settingsPage_exportDatabase_importNoItems": {
+    "description": "The notification shown when there are no items to import."
+  },
+  "settingsPage_exportDatabase_importStoragePermissionRequired": "Storage permission is required to import your items",
+  "@settingsPage_exportDatabase_importStoragePermissionRequired": {
+    "description": "The notification shown when the app requires storage permission to import the database."
+  },
+  "settingsPage_exportDatabase_importUnknownError": "An unknown error occurred during the import...",
+  "@settingsPage_exportDatabase_importUnknownError": {
+    "description": "The notification shown when an unknown error occurs during the import of the database."
+  },
+  "settingsPage_importDatabase_dialogueTitle": "Configure import",
+  "@settingsPage_importDatabase_dialogueTitle": {
+    "description": "The title of the file import option picker dialogue."
+  },
+  "settingsPage_importDatabase_dialogueDescription": "Would you like to clear existing items before importing?",
+  "@settingsPage_importDatabase_dialogueDescription": {
+    "description": "The description of the file import option picker dialogue."
+  },
+  "settingsPage_importDatabase_dialogueRemoveExistingItems": "Clear existing items",
+  "@settingsPage_importDatabase_dialogueRemoveExistingItems": {
+    "description": "The option to clear existing items when importing a database."
+  },
+  "settingsPage_importDatabase_dialogueImportConfirmation": "Import",
+  "@settingsPage_importDatabase_dialogueImportConfirmation": {
+    "description": "The confirmation button to import the database."
+  },
+  "settingsPage_importDatabase_importDatabaseTitle": "Import backup",
+  "@settingsPage_importDatabase_importDatabaseTitle": {
+    "description": "The title of the setting that triggers the importing pop-up."
+  },
+  "settingsPage_importDatabase_importDatabaseDescription": "Import a database from a file.",
+  "@settingsPage_importDatabase_importDatabaseDescription": {
+    "description": "The description of the setting that triggers the importing pop-up."
+  },
   "configureRemindersPage_header_title": "Configure reminders",
   "@configureRemindersPage_header_title": {
     "description": "The title of the page to configure reminders on."
@@ -194,6 +274,18 @@
   "configureRemindersPage_reminder_suffix": "",
   "@configureRemindersPage_reminder_suffix": {
     "description": "The suffix of the reminder selector"
+  },
+  "configureRemindersPage_reminderValidation_duplicate": "The \"{reminderAmount} - {reminderType}\" reminder already exists.",
+  "@configureRemindersPage_reminderValidation_duplicate": {
+    "description": "The error message shown when the user tries to add a reminder that already exists.",
+    "placeholders": {
+      "reminderAmount": {
+        "type": "num"
+      },
+      "reminderType": {
+        "type": "String"
+      }
+    }
   },
   "configureRemindersPage_reminder_noActiveReminders": "You have no active reminders.",
   "@configureRemindersPage_reminder_noActiveReminders": {
@@ -227,6 +319,10 @@
   "@itemConfig_generic_expirationDateTitle": {
     "description": "text"
   },
+  "itemConfig_generic_exitWithoutSaving": "You have pending changes, are you sure you want to leave without saving?",
+  "@itemConfig_generic_exitWithoutSaving": {
+    "description": "The text shown when the user tries to leave the item configuration page without saving changes."
+  },
   "itemConfig_edit_headerTitle": "Edit product",
   "@itemConfig_edit_headerTitle": {
     "description": "text"
@@ -246,5 +342,21 @@
   "generic_delete": "Delete",
   "@generic_delete": {
     "description": "Generic NEGATIVE confirmation text on pop-ups and menus, meaning to confirm a destructive action that deletes something."
+  },
+  "generic_dismiss": "Dismiss",
+  "@generic_dismiss": {
+    "description": "Generic dismiss text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_undo": "Undo",
+  "@generic_undo": {
+    "description": "Generic undo text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_openSettings": "Open settings",
+  "@generic_openSettings": {
+    "description": "Generic text to open the settings page."
+  },
+  "generic_unknownError": "Something went terribly wrong, please contact the developers (Freazy on GitHub).",
+  "@generic_unknownError": {
+    "description": "The error shown when something unexpected happens logic wise that can't be solved in a clean manner."
   }
 }

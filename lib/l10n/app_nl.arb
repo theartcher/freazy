@@ -87,7 +87,7 @@
   "@settingsPage_header_title": {
     "description": "The title of the page."
   },
-  "settingsPage_remindersSection_header": "Herinerringen & meldingen",
+  "settingsPage_remindersSection_header": "Herinnerringen & meldingen",
   "@settingsPage_remindersSection_header": {
     "description": "The title of the reminders section."
   },
@@ -99,7 +99,11 @@
   "@settingsPage_remindersSection_notificationDescription": {
     "description": "Description of the checkbox to toggle notifications."
   },
-  "settingsPage_remindersSection_remindersTitle": "Herinerringen aanpassen",
+  "settingsPage_remindersSection_permissionDenied": "U heeft toestemming tot uw notificaties geweigerd, u kunt dit in de instelling aanpassen.",
+  "@settingsPage_remindersSection_permissionDenied": {
+    "description": "The error message shown when the user has denied notification permissions."
+  },
+  "settingsPage_remindersSection_remindersTitle": "Herinnerringen aanpassen",
   "@settingsPage_remindersSection_remindersTitle": {
     "description": "The title text of setting to manage reminders."
   },
@@ -171,6 +175,82 @@
   "@settingsPage_resetApp_checkboxAcceptConsequences": {
     "description": "The elaboration of the checkbox, explaining the users accepts all consequences."
   },
+  "settingsPage_exportImportSection_header": "Backup & herstel",
+  "@settingsPage_exportImportSection_header": {
+    "description": "The title of the backup & restore section."
+  },
+  "settingsPage_exportDatabase_exportDatabaseTitle": "Exporteer backup",
+  "@settingsPage_exportDatabase_exportDatabaseTitle": {
+    "description": "The title of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_exportDatabase_exportDatabaseDescription": "Exporteer je producten naar een bestand.",
+  "@settingsPage_exportDatabase_exportDatabaseDescription": {
+    "description": "The description of the setting that triggers the exporting pop-up."
+  },
+  "settingsPage_exportDatabase_exportDatabaseSuccess": "Producten succesvol geëxporteerd.",
+  "@settingsPage_exportDatabase_exportDatabaseSuccess": {
+    "description": "The notification shown after exporting the database."
+  },
+  "settingsPage_exportDatabase_exportDatabaseCancelled": "Producten exporteren geannuleerd.",
+  "@settingsPage_exportDatabase_exportDatabaseCancelled": {
+    "description": "The notification shown after cancelling the exporting of the database."
+  },
+  "settingsPage_exportDatabase_exportNoItems": "Er zijn geen producten om te exporteren.",
+  "@settingsPage_exportDatabase_exportNoItems": {
+    "description": "The notification shown when there are no items to export."
+  },
+  "settingsPage_exportDatabase_exportStoragePermissionRequired": "Toegang tot de opslag is vereist om je producten te exporteren.",
+  "@settingsPage_exportDatabase_exportStoragePermissionRequired": {
+    "description": "The notification shown when the app requires storage permission to export the database."
+  },
+  "settingsPage_exportDatabase_exportUnknownError": "Er is een onbekende fout opgetreden tijdens het exporteren van de backup.",
+  "@settingsPage_exportDatabase_exportUnknownError": {
+    "description": "The notification shown when an unknown error occurs during the export of the database."
+  },
+  "settingsPage_exportDatabase_importDatabaseSuccess": "Producten succesvol geïmporteerd.",
+  "@settingsPage_exportDatabase_importDatabaseSuccess": {
+    "description": "The notification shown after importing the database."
+  },
+  "settingsPage_exportDatabase_importDatabaseCancelled": "Producten import geannuleerd.",
+  "@settingsPage_exportDatabase_importDatabaseCancelled": {
+    "description": "The notification shown after cancelling the importing of the database."
+  },
+  "settingsPage_exportDatabase_importNoItems": "Er zijn geen producten om te importeren.",
+  "@settingsPage_exportDatabase_importNoItems": {
+    "description": "The notification shown when there are no items to import."
+  },
+  "settingsPage_exportDatabase_importStoragePermissionRequired": "Toegang tot de opslag is vereist om je producten te importeren.",
+  "@settingsPage_exportDatabase_importStoragePermissionRequired": {
+    "description": "The notification shown when the app requires storage permission to import the database."
+  },
+  "settingsPage_exportDatabase_importUnknownError": "Er is een onbekende fout opgetreden tijdens het importeren van de backup.",
+  "@settingsPage_exportDatabase_importUnknownError": {
+    "description": "The notification shown when an unknown error occurs during the import of the database."
+  },
+  "settingsPage_importDatabase_dialogueTitle": "Import configureren",
+  "@settingsPage_importDatabase_dialogueTitle": {
+    "description": "The title of the file import option picker dialogue."
+  },
+  "settingsPage_importDatabase_dialogueDescription": "Wil je bestaande producten bewaren naast de geïmporteerde producten?",
+  "@settingsPage_importDatabase_dialogueDescription": {
+    "description": "The description of the file import option picker dialogue."
+  },
+  "settingsPage_importDatabase_dialogueRemoveExistingItems": "Verwijder bestaande producten",
+  "@settingsPage_importDatabase_dialogueRemoveExistingItems": {
+    "description": "The option to clear existing items when importing a database."
+  },
+  "settingsPage_importDatabase_dialogueImportConfirmation": "Importeer",
+  "@settingsPage_importDatabase_dialogueImportConfirmation": {
+    "description": "The confirmation button to import the database."
+  },
+  "settingsPage_importDatabase_importDatabaseTitle": "Importeer backup",
+  "@settingsPage_importDatabase_importDatabaseTitle": {
+    "description": "The title of the setting that triggers the importing pop-up."
+  },
+  "settingsPage_importDatabase_importDatabaseDescription": "Importeer een database vanuit een bestand.",
+  "@settingsPage_importDatabase_importDatabaseDescription": {
+    "description": "The description of the setting that triggers the importing pop-up."
+  },
   "configureRemindersPage_header_title": "Configureer herinnerringen",
   "@configureRemindersPage_header_title": {
     "description": "The title of the page to configure reminders on."
@@ -183,17 +263,29 @@
   "@configureRemindersPage_reminder_prefix": {
     "description": "The prefix of the reminder selector"
   },
-  "configureRemindersPage_reminder_optionDay": "week(-en)",
+  "configureRemindersPage_reminder_optionDay": "dag(-en)",
   "@configureRemindersPage_reminder_optionDay": {
     "description": "The text for the 'day' option."
   },
-  "configureRemindersPage_reminder_optionWeek": "dag(-en)",
+  "configureRemindersPage_reminder_optionWeek": "week(-en)",
   "@configureRemindersPage_reminder_optionWeek": {
     "description": "The text for the 'week' option."
   },
   "configureRemindersPage_reminder_suffix": "van tevoren",
   "@configureRemindersPage_reminder_suffix": {
     "description": "The suffix of the reminder selector"
+  },
+  "configureRemindersPage_reminderValidation_duplicate": "De melding \"{reminderAmount} - {reminderType}\" bestaat al.",
+  "@configureRemindersPage_reminderValidation_duplicate": {
+    "description": "The error message shown when the user tries to add a reminder that already exists.",
+    "placeholders": {
+      "reminderAmount": {
+        "type": "num"
+      },
+      "reminderType": {
+        "type": "String"
+      }
+    }
   },
   "configureRemindersPage_reminder_noActiveReminders": "U heeft geen opgeslagen herinnerringen",
   "@configureRemindersPage_reminder_noActiveReminders": {
@@ -227,6 +319,10 @@
   "@itemConfig_generic_expirationDateTitle": {
     "description": "text"
   },
+  "itemConfig_generic_exitWithoutSaving": "U verlaat de pagina zonder wijzigingen op te slaan. Weet u het zeker?",
+  "@itemConfig_generic_exitWithoutSaving": {
+    "description": "The text shown when the user tries to leave the item configuration page without saving changes."
+  },
   "itemConfig_edit_headerTitle": "Product bewerken",
   "@itemConfig_edit_headerTitle": {
     "description": "text"
@@ -246,5 +342,21 @@
   "generic_delete": "Verwijderen",
   "@generic_delete": {
     "description": "Generic NEGATIVE confirmation text on pop-ups and menus, meaning to confirm a destructive action that deletes something."
+  },
+  "generic_dismiss": "Sluiten",
+  "@generic_dismiss": {
+    "description": "Generic dismiss text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_undo": "Ongedaan maken",
+  "@generic_undo": {
+    "description": "Generic undo text on pop-ups and menus, meaning to close the pop-up or menu."
+  },
+  "generic_openSettings": "Instellingen openen",
+  "@generic_openSettings": {
+    "description": "Generic text to open the settings page."
+  },
+  "generic_unknownError": "Er is iets compleet mis gegaan, neem s.v.p. contact op met de developers (Freazy on GitHub).",
+  "@generic_unknownError": {
+    "description": "The error shown when something unexpected happens logic wise that can't be solved in a clean manner."
   }
 }

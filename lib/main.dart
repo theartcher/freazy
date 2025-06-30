@@ -1,15 +1,18 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:freazy/constants/constants.dart';
+import 'package:freazy/constants/locales.dart';
 import 'package:freazy/constants/routes.dart';
 import 'package:freazy/constants/themes.dart';
 import 'package:freazy/stores/item-store.dart';
 import 'package:freazy/utils/background_manager.dart';
-import 'package:freazy/utils/notification_helper.dart';
+import 'package:freazy/utils/notification/notification_helper.dart';
 import 'package:freazy/utils/settings/preferences_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'widgets/messenger.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
@@ -22,30 +25,30 @@ void callbackDispatcher() {
   });
 }
 
+var notificationChannelConfig = NotificationChannel(
+  channelGroupKey: 'basic_channel_group',
+  channelKey: FREAZY_NOTIFICATION_CHANNEL_KEY,
+  channelName: 'Product expiration reminders',
+  channelDescription:
+      'This notification channel is used for product expiration reminders.',
+  defaultColor: appPrimary,
+  ledColor: appPrimary,
+);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(
     null,
-    [
-      NotificationChannel(
-        channelGroupKey: 'basic_channel_group',
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        defaultColor: appPrimary,
-        ledColor: appPrimary,
-      )
-    ],
-    debug: true,
+    [notificationChannelConfig],
   );
 
   Workmanager().initialize(
     callbackDispatcher,
-    isInDebugMode: true,
   );
 
   BackgroundManager.scheduleReminder(
-      policyOnExistingSchedule: ExistingWorkPolicy.keep);
+    policyOnExistingSchedule: ExistingWorkPolicy.keep,
+  );
 
   ThemeMode themeMode = await PreferencesManager.loadThemeMode();
   Locale locale = await PreferencesManager.loadLocale();
@@ -103,9 +106,10 @@ class _MainAppState extends State<MainApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English US
-        Locale('nl'), // Dutch
+        enLocale, // English US
+        nlLocale, // Dutch
       ],
+      scaffoldMessengerKey: MessengerService.messengerKey,
     );
   }
 

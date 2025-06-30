@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:freazy/widgets/messenger.dart';
 
 class Item {
   int? id;
@@ -80,5 +83,22 @@ class Item {
       category: map['category'] as String,
       freezer: map['freezer'] as String,
     );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Item.fromJson(String source) {
+    try {
+      return Item.fromMap(json.decode(source));
+    } catch (e) {
+      MessengerService().showMessage(
+        message:
+            "Something went very, very wrong if you see this, contact the developers.",
+        type: MessageType.error,
+        duration: const Duration(seconds: 15),
+      );
+
+      return Item.empty();
+    }
   }
 }

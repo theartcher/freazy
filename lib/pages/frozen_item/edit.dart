@@ -10,6 +10,7 @@ import 'package:freazy/widgets/frozen_item_fields/freezer.dart';
 import 'package:freazy/widgets/frozen_item_fields/title.dart';
 import 'package:freazy/widgets/frozen_item_fields/weight-unit.dart';
 import 'package:freazy/widgets/frozen_item_fields/weight.dart';
+import 'package:freazy/widgets/messenger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
@@ -37,6 +38,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
   ItemAutoCompleteSuggestions suggestions = ItemAutoCompleteSuggestions.empty();
   bool _isLoading = false;
+  bool _confirmExit = false;
 
   @override
   void initState() {
@@ -54,11 +56,6 @@ class _EditItemPageState extends State<EditItemPage> {
     });
   }
 
-  void exitWithoutSaving() {
-    store.clearItem();
-    context.pop();
-  }
-
   Future<void> exitWithSaving() async {
     setState(() {
       _isLoading = true;
@@ -71,15 +68,16 @@ class _EditItemPageState extends State<EditItemPage> {
       selectedItem.id = widget.item.id;
       await _dbHelper.updateItem(selectedItem);
 
-      store.clearItem();
       // ignore: use_build_context_synchronously
       context.pop(true);
+      store.clearItem();
+      _formKey.currentState!.reset();
+
+      MessengerService().clearCurrentMessage();
     } else {
       setState(() {
         _isLoading = false;
       });
-
-      _formKey.currentState!.reset();
     }
   }
 
@@ -88,6 +86,35 @@ class _EditItemPageState extends State<EditItemPage> {
     final theme = Theme.of(context);
     store = Provider.of<FrozenItemStore>(context);
     final localization = AppLocalizations.of(context)!;
+
+    void exitWithoutSaving() {
+      if (store.isDirty) {
+        if (!_confirmExit) {
+          MessengerService().showMessage(
+            message: localization.itemConfig_generic_exitWithoutSaving,
+            type: MessageType.info,
+            closeMessage: localization.generic_confirm,
+            duration: const Duration(seconds: 10),
+            onClose: () {
+              setState(() {
+                _confirmExit = true;
+              });
+              exitWithoutSaving();
+            },
+          );
+
+          setState(() {
+            _confirmExit = true;
+          });
+
+          return;
+        }
+      }
+
+      MessengerService().clearCurrentMessage();
+      store.clearItem();
+      context.pop();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -108,7 +135,11 @@ class _EditItemPageState extends State<EditItemPage> {
                 )
               : IconButton(
                   icon: const Icon(Icons.check),
-                  onPressed: () => exitWithSaving(),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      exitWithSaving();
+                    }
+                  },
                 )
         ],
       ),
