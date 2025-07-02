@@ -26,6 +26,7 @@ dependencies:
   file_picker: ^9.0.0
   permission_handler: ^11.3.1
   simple_barcode_scanner: ^0.3.0
+  openfoodfacts: ^3.23.0
 
 dev_dependencies:
   flutter_test:

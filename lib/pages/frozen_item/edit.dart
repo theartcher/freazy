@@ -84,7 +84,7 @@ class _EditItemPageState extends State<EditItemPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    store = Provider.of<FrozenItemStore>(context);
+    store = context.watch<FrozenItemStore>();
     final localization = AppLocalizations.of(context)!;
 
     void exitWithoutSaving() {

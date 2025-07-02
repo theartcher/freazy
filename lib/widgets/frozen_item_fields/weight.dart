@@ -25,7 +25,7 @@ class _ItemWeight extends State<ItemWeight> {
           widget.focusHelper.weightFocusNode,
           widget.focusHelper.weightUnitFocusNode,
           context),
-      selectedWeight: store.weight,
+      selectedWeight: context.watch<FrozenItemStore>().weight,
     );
   }
 }

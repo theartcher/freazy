@@ -2,10 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freazy/models/item.dart';
 
-/* TO DO:
-  - Implement
-  - Add validation
-*/
+//TODO - Update widgets to use clear functions
 class FrozenItemStore with ChangeNotifier {
   int? _id;
   String _title = '';
@@ -77,12 +74,24 @@ class FrozenItemStore with ChangeNotifier {
     }
   }
 
-  void setTitle(String title) {
-    if (_title != title) {
-      _title = title;
+  void clearId() {
+    _id = -1;
+    _isDirty = false;
+    notifyListeners();
+  }
+
+  void setTitle(String newTitle) {
+    if (_title != newTitle) {
+      _title = newTitle;
       _isDirty = true;
       notifyListeners();
     }
+  }
+
+  void clearTitle() {
+    _title = "";
+    _isDirty = false;
+    notifyListeners();
   }
 
   void setFreezer(String freezer) {
@@ -93,12 +102,24 @@ class FrozenItemStore with ChangeNotifier {
     }
   }
 
+  void clearFreezer() {
+    _freezer = "";
+    _isDirty = false;
+    notifyListeners();
+  }
+
   void setCategory(String category) {
     if (_category != category) {
       _category = category;
       _isDirty = true;
       notifyListeners();
     }
+  }
+
+  void clearCategory() {
+    _category = "";
+    _isDirty = false;
+    notifyListeners();
   }
 
   void setWeight(num weight) {
@@ -109,12 +130,24 @@ class FrozenItemStore with ChangeNotifier {
     }
   }
 
+  void clearWeight() {
+    _weight = 0;
+    _isDirty = false;
+    notifyListeners();
+  }
+
   void setWeightUnit(String weightUnit) {
     if (_weightUnit != weightUnit) {
       _weightUnit = weightUnit;
       _isDirty = true;
       notifyListeners();
     }
+  }
+
+  void clearWeightUnit() {
+    _weightUnit = "";
+    _isDirty = false;
+    notifyListeners();
   }
 
   void setFreezerDate(DateTime freezeDate) {

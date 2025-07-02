@@ -26,6 +26,7 @@ class _WeightInputState extends State<WeightInput> {
   final _validationHelper = FormValidationHelper();
 
   late TextEditingController _controller;
+  String? _lastSelectedWeight;
   String? _errorText;
   bool _enabled = true;
 
@@ -35,6 +36,21 @@ class _WeightInputState extends State<WeightInput> {
     _controller = TextEditingController(
         text:
             widget.selectedWeight == 0 ? '' : widget.selectedWeight.toString());
+    _lastSelectedWeight = widget.selectedWeight.toString();
+  }
+
+  @override
+  void didUpdateWidget(covariant WeightInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newWeight = widget.selectedWeight == 0 ? '' : widget.selectedWeight.toString();
+    if (newWeight != _lastSelectedWeight) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.text = newWeight;
+        }
+      });
+      _lastSelectedWeight = newWeight;
+    }
   }
 
   @override

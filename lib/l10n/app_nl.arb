@@ -335,6 +335,22 @@
   "@itemConfig_create_scanCancelledOrFailed": {
     "description": "The text shown in the info message that a product barcode scan was unsuccessful."
   },
+  "itemConfig_create_productInfoFilled": "Productinformatie bijgewerkt!",
+  "@itemConfig_create_productInfoFilled": {
+    "description": "The message shown when both a product name and a quantity & unit was found."
+  },
+  "itemConfig_create_partialInfoFilled": "Productinformatie gedeeltelijk bijgewerkt",
+  "@itemConfig_create_partialInfoFilled": {
+    "description": "The message shown when either a product name or a quantity & unit was found."
+  },
+  "itemConfig_create_productInfoRetrievalFailed": "Er was een probleem bij het vinden van product gegevens, bent u verbonden met het internet?",
+  "@itemConfig_create_productInfoRetrievalFailed": {
+    "description": "Shown when the endpoint to get product info fails."
+  },
+  "itemConfig_create_productNotFound": "Product informatie ophalen is mislukt, probeer een andere barcode.",
+  "@itemConfig_create_productNotFound": {
+    "description": "Shown when the aren't networking or API errors, but the result has a problem regardless."
+  },
   "generic_cancel": "Annuleren",
   "@generic_cancel": {
     "description": "Generic cancel text on pop-ups and menus, meaning to exit without making changes."

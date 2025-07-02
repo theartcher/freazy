@@ -11,8 +11,11 @@ class ItemTitle extends StatefulWidget {
   final ItemAutoCompleteSuggestions suggestions;
   final FormFocusHelper focusHelper;
 
-  const ItemTitle(
-      {super.key, required this.suggestions, required this.focusHelper});
+  const ItemTitle({
+    super.key,
+    required this.suggestions,
+    required this.focusHelper,
+  });
 
   @override
   State<ItemTitle> createState() => _ItemTitleState();
@@ -23,18 +26,19 @@ class _ItemTitleState extends State<ItemTitle> {
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<FrozenItemStore>(context);
+    final store = context.watch<FrozenItemStore>();
     final localization = AppLocalizations.of(context)!;
 
     return InputWithSuggestions(
       focusNode: widget.focusHelper.titleFocusNode,
       shiftFocus: () => widget.focusHelper.nextFocus(
-          widget.focusHelper.titleFocusNode,
-          widget.focusHelper.weightFocusNode,
-          context),
+        widget.focusHelper.titleFocusNode,
+        widget.focusHelper.weightFocusNode,
+        context,
+      ),
       autocompleteSuggestions: widget.suggestions.titles,
       selectItem: (value) => store.setTitle(value),
-      selectedItem: store.title,
+      selectedItem: context.watch<FrozenItemStore>().title,
       validateForm: (value) => _validationHelper.validateTitle(value),
       setFocusNode: widget.focusHelper.setTitleFocusNode,
       label: localization.itemConfig_generic_productTitle,

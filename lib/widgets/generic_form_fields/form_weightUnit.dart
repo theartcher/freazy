@@ -26,7 +26,34 @@ class WeightUnitSelector extends StatefulWidget {
 //TODO: Rework this into 'weigh-input.dart' widget, this isn't generic enough so can be used directly.
 class _WeightUnitSelectorState extends State<WeightUnitSelector> {
   bool _enabled = true;
-  bool _hasBeenInitialized = false;
+  late TextEditingController _controller;
+  String? _lastSelectedItem;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.selectedItem);
+    _lastSelectedItem = widget.selectedItem;
+  }
+
+  @override
+  void didUpdateWidget(covariant WeightUnitSelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedItem != _lastSelectedItem) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.text = widget.selectedItem;
+        }
+      });
+      _lastSelectedItem = widget.selectedItem;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +72,9 @@ class _WeightUnitSelectorState extends State<WeightUnitSelector> {
           },
           onSelected: widget.selectItem,
           fieldViewBuilder: (BuildContext context,
-              TextEditingController controller,
+              TextEditingController _ignored,
               FocusNode focusNode,
               VoidCallback onFieldSubmitted) {
-            if (!_hasBeenInitialized) {
-              controller.text = widget.selectedItem;
-              _hasBeenInitialized = true;
-            }
-
             widget.setFocusNode(focusNode);
             return SizedBox(
               width: 100,
@@ -60,7 +82,7 @@ class _WeightUnitSelectorState extends State<WeightUnitSelector> {
                 enabled: _enabled,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: widget.validateForm,
-                controller: controller,
+                controller: _controller,
                 focusNode: focusNode,
                 decoration: InputDecoration(
                   labelText: localization.itemConfig_generic_weightUnitTitle,

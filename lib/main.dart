@@ -9,6 +9,7 @@ import 'package:freazy/stores/item-store.dart';
 import 'package:freazy/utils/background_manager.dart';
 import 'package:freazy/utils/notification/notification_helper.dart';
 import 'package:freazy/utils/settings/preferences_manager.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,6 +38,12 @@ var notificationChannelConfig = NotificationChannel(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  OpenFoodAPIConfiguration.userAgent = UserAgent(
+    name: 'freazy',
+    version: "1.0",
+  );
+
   AwesomeNotifications().initialize(
     null,
     [notificationChannelConfig],
@@ -54,7 +61,7 @@ void main() async {
   Locale locale = await PreferencesManager.loadLocale();
 
   runApp(ChangeNotifierProvider(
-    create: (context) => FrozenItemStore(),
+    create: (_) => FrozenItemStore(),
     child: MainApp(
       initialTheme: themeMode,
       initialLocale: locale,

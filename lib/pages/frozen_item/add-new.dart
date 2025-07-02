@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:freazy/main.dart';
 import 'package:freazy/models/item-autocomplete-suggestions.dart';
 import 'package:freazy/stores/item-store.dart';
 import 'package:freazy/utils/forms/form_focus_helper.dart';
+import 'package:freazy/utils/open_food_facts/locale_to_language.dart';
 import 'package:freazy/widgets/frozen_item_fields/category.dart';
 import 'package:freazy/widgets/frozen_item_fields/expiration-date.dart';
 import 'package:freazy/widgets/frozen_item_fields/freeze-date.dart';
@@ -14,6 +16,7 @@ import 'package:freazy/widgets/messenger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:freazy/models/item.dart';
 import 'package:freazy/utils/databases/item_database_helper.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
@@ -37,7 +40,6 @@ class _AddItemPageState extends State<AddItemPage> {
   ItemAutoCompleteSuggestions suggestions = ItemAutoCompleteSuggestions.empty();
   bool _isLoading = false;
   bool _confirmExit = false;
-  String scannedBarcode = "I HAVE NOTHIIIIIIING";
 
   @override
   void initState() {
@@ -81,7 +83,7 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    store = Provider.of<FrozenItemStore>(context);
+    store = context.watch<FrozenItemStore>();
     final localization = AppLocalizations.of(context)!;
 
     void exitWithoutSaving() {
@@ -111,6 +113,123 @@ class _AddItemPageState extends State<AddItemPage> {
       context.pop();
     }
 
+    Future<String> getRawBarcode() async {
+      String? rawScanResult = await SimpleBarcodeScanner.scanBarcode(
+        context,
+        barcodeAppBar: const BarcodeAppBar(
+          appBarTitle: 'Scanner',
+          centerTitle: false,
+          enableBackButton: true,
+          backButtonIcon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
+        cancelButtonText: localization.generic_cancel,
+        scanFormat: ScanFormat.ONLY_BARCODE,
+        isShowFlashIcon: true,
+        delayMillis: 2000,
+        cameraFace: CameraFace.back,
+      );
+
+      if (rawScanResult == "-1" || rawScanResult == null) {
+        MessengerService().showMessage(
+          message: localization.itemConfig_create_scanCancelledOrFailed,
+          type: MessageType.info,
+          duration: const Duration(seconds: 5),
+        );
+
+        return "";
+      }
+
+      return rawScanResult;
+    }
+
+    Future<ProductResultV3> getProductInformation(String scannedBarcode) async {
+      final language = fromLocaleToOpenFoodFactsLanguage(
+        MainApp.of(context).selectedLocale,
+      );
+
+      final ProductQueryConfiguration configuration = ProductQueryConfiguration(
+        scannedBarcode,
+        language: language,
+        fields: [
+          ProductField.NAME,
+          ProductField.QUANTITY,
+        ],
+        version: ProductQueryVersion.v3,
+      );
+
+      try {
+        return await OpenFoodAPIClient.getProductV3(configuration);
+      } catch (error) {
+        MessengerService().showMessage(
+          message: localization.itemConfig_create_productInfoRetrievalFailed,
+          type: MessageType.error,
+        );
+        return ProductResultV3();
+      }
+    }
+
+    void updateStoreWithProductInformation(ProductResultV3 product) {
+      if (product.status != "statusSuccess" && product.status != "success") {
+        MessengerService().showMessage(
+          message: localization.itemConfig_create_productNotFound,
+          type: MessageType.info,
+        );
+        return;
+      }
+
+      var productName = product.product?.productName;
+      var productQuantityAndUnit = product.product?.quantity;
+
+      var productNameIsValid = productName != null &&
+          productName.isNotEmpty &&
+          productName != 'null';
+
+      var productQuantityAndUnitIsValid = productQuantityAndUnit != null &&
+          productQuantityAndUnit.isNotEmpty &&
+          productQuantityAndUnit != 'null';
+
+      if (productNameIsValid) {
+        store.setTitle(productName);
+      }
+
+      if (productQuantityAndUnitIsValid) {
+        var separateQuantityAndAmount = productQuantityAndUnit.split(" ");
+        var parsedWeight = num.parse(separateQuantityAndAmount[0]);
+
+        store.setWeight(parsedWeight);
+        store.setWeightUnit(separateQuantityAndAmount[1]);
+      }
+
+      if (productNameIsValid && productQuantityAndUnitIsValid) {
+        MessengerService().showMessage(
+          message: localization.itemConfig_create_productInfoFilled,
+          type: MessageType.info,
+        );
+        return;
+      } else {
+        MessengerService().showMessage(
+          message: localization.itemConfig_create_partialInfoFilled,
+          type: MessageType.info,
+        );
+      }
+    }
+
+    Future<void> tryPrefillProductInformation() async {
+      //Get raw barcode result, handles cancelation and failures to scan.
+      var rawScanResult = await getRawBarcode();
+
+      //Cancel empty results
+      if (rawScanResult.isEmpty) return;
+
+      //Get product information
+      var productInfo = await getProductInformation(rawScanResult);
+
+      //Reflect changes in the store
+      updateStoreWithProductInformation(productInfo);
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.colorScheme.primary,
@@ -137,36 +256,8 @@ class _AddItemPageState extends State<AddItemPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
-        onPressed: () async {
-          String? rawScanResult = await SimpleBarcodeScanner.scanBarcode(
-            context,
-            barcodeAppBar: const BarcodeAppBar(
-              appBarTitle: 'Scanner',
-              centerTitle: false,
-              enableBackButton: true,
-              backButtonIcon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            cancelButtonText: localization.generic_cancel,
-            scanFormat: ScanFormat.ONLY_BARCODE,
-            isShowFlashIcon: true,
-            delayMillis: 2000,
-            cameraFace: CameraFace.back,
-          );
-
-          if (rawScanResult == "-1" || rawScanResult == null) {
-            MessengerService().showMessage(
-              message: localization.itemConfig_create_scanCancelledOrFailed,
-              type: MessageType.info,
-              duration: const Duration(seconds: 5),
-            );
-            return;
-          }
-
-          setState(() {
-            scannedBarcode = rawScanResult;
-          });
+        onPressed: () {
+          tryPrefillProductInformation();
         },
         child: const Icon(Icons.barcode_reader),
       ),
@@ -191,7 +282,6 @@ class _AddItemPageState extends State<AddItemPage> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Text(scannedBarcode),
                   ItemTitle(
                     suggestions: suggestions,
                     focusHelper: _focusHelper,

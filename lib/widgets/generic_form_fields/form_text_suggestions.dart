@@ -12,18 +12,19 @@ class InputWithSuggestions extends StatefulWidget {
   final IconData icon;
   final bool autoFocus;
 
-  const InputWithSuggestions(
-      {super.key,
-      required this.autocompleteSuggestions,
-      required this.selectItem,
-      required this.selectedItem,
-      required this.validateForm,
-      required this.focusNode,
-      required this.setFocusNode,
-      required this.shiftFocus,
-      required this.label,
-      required this.icon,
-      this.autoFocus = false});
+  const InputWithSuggestions({
+    super.key,
+    required this.autocompleteSuggestions,
+    required this.selectItem,
+    required this.selectedItem,
+    required this.validateForm,
+    required this.focusNode,
+    required this.setFocusNode,
+    required this.shiftFocus,
+    required this.label,
+    required this.icon,
+    this.autoFocus = false,
+  });
 
   @override
   State<InputWithSuggestions> createState() => _InputWithSuggestionsState();
@@ -31,7 +32,34 @@ class InputWithSuggestions extends StatefulWidget {
 
 class _InputWithSuggestionsState extends State<InputWithSuggestions> {
   bool _enabled = true;
-  bool _hasBeenInitialized = false;
+  late TextEditingController _controller;
+  String? _lastSelectedItem;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.selectedItem);
+    _lastSelectedItem = widget.selectedItem;
+  }
+
+  @override
+  void didUpdateWidget(covariant InputWithSuggestions oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedItem != _lastSelectedItem) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.text = widget.selectedItem;
+        }
+      });
+      _lastSelectedItem = widget.selectedItem;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +76,9 @@ class _InputWithSuggestionsState extends State<InputWithSuggestions> {
           child: Autocomplete<String>(
             optionsBuilder: (TextEditingValue textEditingValue) {
               return widget.autocompleteSuggestions
-                  .map((option) =>
-                      option.trim()) // Trim leading and trailing spaces
+                  .map(
+                    (option) => option.trim(),
+                  ) // Trim leading and trailing spaces
                   .toSet() // Remove duplicates
                   .where((String option) {
                 return option.toLowerCase().contains(
@@ -60,32 +89,32 @@ class _InputWithSuggestionsState extends State<InputWithSuggestions> {
             onSelected: (String selection) {
               widget.selectItem(selection);
             },
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController controller,
-                FocusNode focusNode,
-                VoidCallback onFieldSubmitted) {
-              if (!_hasBeenInitialized) {
-                controller.text = widget.selectedItem;
-                _hasBeenInitialized = true;
-              }
+            fieldViewBuilder: (
+              BuildContext context,
+              TextEditingController _ignored, // ignore, use our own
+              FocusNode focusNode,
+              VoidCallback onFieldSubmitted,
+            ) {
               widget.setFocusNode(focusNode);
+
               return TextFormField(
                 enabled: _enabled,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: widget.validateForm,
-                controller: controller,
+                controller: _controller,
                 focusNode: focusNode,
                 autofocus: widget.autoFocus,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   labelText: widget.label,
                   suffixIcon: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        setState(() {
-                          controller.clear();
-                        });
-                      }),
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      setState(() {
+                        _controller.clear();
+                      });
+                    },
+                  ),
                 ),
                 onTapOutside: (PointerDownEvent? event) =>
                     FocusScope.of(context).unfocus(),
@@ -94,7 +123,9 @@ class _InputWithSuggestionsState extends State<InputWithSuggestions> {
                 }),
                 onChanged: (value) => {
                   if (widget.validateForm(value) == null)
-                    {widget.selectItem(value)}
+                    {
+                      widget.selectItem(value),
+                    }
                 },
                 onFieldSubmitted: (value) {
                   var isFieldValid = (widget.validateForm(value) == null);

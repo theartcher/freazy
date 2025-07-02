@@ -28,13 +28,14 @@ class _ItemWeightUnit extends State<ItemWeightUnit> {
     return WeightUnitSelector(
       autocompleteSuggestions: widget.suggestions.weightUnits,
       selectItem: (value) => store.setWeightUnit(value),
-      selectedItem: store.weightUnit,
+      selectedItem: context.watch<FrozenItemStore>().weightUnit,
       validateForm: (value) => _validationHelper.validateWeightUnit(value),
       setFocusNode: widget.focusHelper.setWeightUnitFocusNode,
       shiftFocus: () => widget.focusHelper.nextFocus(
-          widget.focusHelper.weightUnitFocusNode,
-          widget.focusHelper.freezerFocusNode,
-          context),
+        widget.focusHelper.weightUnitFocusNode,
+        widget.focusHelper.freezerFocusNode,
+        context,
+      ),
     );
   }
 }
