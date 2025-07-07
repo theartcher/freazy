@@ -52,7 +52,7 @@ class OverviewListTile extends StatelessWidget {
       secondaryBackground: Container(
         color: theme.colorScheme.error,
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.symmetric(horizontal: paddingEdges),
+        padding: const EdgeInsets.symmetric(horizontal: paddingEdges),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       direction: DismissDirection.horizontal,
@@ -74,26 +74,32 @@ class OverviewListTile extends StatelessWidget {
         }
       },
       child: ListTile(
-        title: Row(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              localization.homePage_item_header(
-                item.title,
-                item.weight,
-                item.weightUnit,
-              ),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            if (DateTime.now().isAfter(item.expirationDate))
-              Expanded(
-                child: Text(
-                  localization.homePage_item_expiredAttribute,
-                  style: TextStyle(color: theme.colorScheme.error),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    localization.homePage_item_header(
+                      item.title,
+                      item.weight,
+                      item.weightUnit,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    softWrap: false,
+                  ),
                 ),
-              )
+                const SizedBox(width: 8),
+                if (DateTime.now().isAfter(item.expirationDate))
+                  Text(
+                    localization.homePage_item_expiredAttribute,
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+              ],
+            ),
           ],
         ),
         subtitle: Text(
