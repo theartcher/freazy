@@ -16,6 +16,14 @@ class NotificationLocalizationHelper {
   static const String titleEn = 'Check your freezer soon';
   static const String titleNl = 'Check binnenkort de vriezer';
 
+  static String multipleProductsHaveExpiredNl(int count) {
+    return "U heeft $count product(-en) die uit de vriezer moeten, controleer uw vriezer!";
+  }
+
+  static String multipleProductsHaveExpiredEn(int count) {
+    return "You have $count expired product(-s), please check your freezer!";
+  }
+
   static String singleProductExpirationNl(
       String productName, DateTime expirationDate) {
     return 'Uw product $productName gaat op ${DateFormat("yyyy-MM-dd").format(expirationDate)} over de datum.';
@@ -67,6 +75,17 @@ class NotificationLocalizationHelper {
         return unexpectedErrorNl;
       default:
         return unexpectedErrorEn;
+    }
+  }
+
+  String getProductsHaveExpired(Locale locale, int count) {
+    switch (locale) {
+      case enLocale:
+        return multipleProductsHaveExpiredEn(count);
+      case nlLocale:
+        return multipleProductsHaveExpiredNl(count);
+      default:
+        return multipleProductsHaveExpiredEn(count);
     }
   }
 

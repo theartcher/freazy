@@ -25,31 +25,62 @@ class NotificationHelper {
     List<Item> items = await db.fetchItems();
     if (items.isEmpty) return true;
 
+    // Get the user's locale from preferences.
+    Locale locale = await PreferencesManager.loadLocale();
+
+    //Check if there are any expired products prior to checking for reminders.
+    int expiredProductsCount = _getExpiredItemCount(items);
+    if (expiredProductsCount > 0) {
+      _formatExpiredWarningNotification(
+        expiredProductsCount,
+        locale,
+      );
+    }
+
     // Get items to notify about
     // If there are no items that need reminding, there's no need to send a notification.
     List<Item> itemsToNotifyAbout = _getItemsToNotify(items, itemReminders);
     if (itemsToNotifyAbout.isEmpty) return true;
 
     //Format the notification string.
-    Locale locale = await PreferencesManager.loadLocale();
-    String notificationString =
-        await _formatNotificationString(itemsToNotifyAbout, locale);
+    String notificationString = await _formatReminderNotification(
+      itemsToNotifyAbout,
+      locale,
+    );
 
     AwesomeNotifications().createNotification(
-        content: NotificationContent(
-      id: 10,
-      channelKey: FREAZY_NOTIFICATION_CHANNEL_KEY,
-      actionType: ActionType.Default,
-      title: NotificationLocalizationHelper().getTitle(locale),
-      body: notificationString,
-    ));
+      content: NotificationContent(
+        id: 10,
+        channelKey: FREAZY_NOTIFICATION_CHANNEL_KEY,
+        actionType: ActionType.Default,
+        title: NotificationLocalizationHelper().getTitle(locale),
+        body: notificationString,
+      ),
+    );
 
     //Let the work manager know the task executed successfully.
     return true;
   }
 
+  /// Formats a notification in regard to notifications in the correct [Locale].
+  String _formatExpiredWarningNotification(
+    int expiredItemsCount,
+    Locale locale,
+  ) {
+    var notificationLocalization = NotificationLocalizationHelper();
+
+    if (expiredItemsCount == 0) {
+      return notificationLocalization.getUnexpectedError(locale);
+    }
+
+    return notificationLocalization.getProductsHaveExpired(
+      locale,
+      expiredItemsCount,
+    );
+  }
+
   /// Private method to formulate the string to be displayed in the notification.
-  Future<String> _formatNotificationString(
+  Future<String> _formatReminderNotification(
     List<Item> items,
     Locale locale,
   ) async {
@@ -114,5 +145,18 @@ class NotificationHelper {
     }
 
     return itemsToNotify;
+  }
+
+  /// Returns the number of items that are expired (expirationDate before or on today)
+  int _getExpiredItemCount(List<Item> items) {
+    final today = DateTime.now();
+    return items.where((item) {
+      final expiration = item.expirationDate;
+      return expiration.year < today.year ||
+          (expiration.year == today.year && expiration.month < today.month) ||
+          (expiration.year == today.year &&
+              expiration.month == today.month &&
+              expiration.day <= today.day);
+    }).length;
   }
 }
