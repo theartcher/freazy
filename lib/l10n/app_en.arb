@@ -155,7 +155,7 @@
   "@settingsPage_personalizationSection_localeEN": {
     "description": "The name of the 'EN' locale."
   },
-  "settingsPage_personalizationSection_localeNL": "Dutch",
+  "settingsPage_personalizationSection_localeNL": "Nederlands",
   "@settingsPage_personalizationSection_localeNL": {
     "description": "The name of the 'NL' locale."
   },

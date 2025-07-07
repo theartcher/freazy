@@ -151,7 +151,7 @@
   "@settingsPage_personalizationSection_localeDescription": {
     "description": "The description of the locale selector."
   },
-  "settingsPage_personalizationSection_localeEN": "Engels",
+  "settingsPage_personalizationSection_localeEN": "English",
   "@settingsPage_personalizationSection_localeEN": {
     "description": "The name of the 'EN' locale."
   },
