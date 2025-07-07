@@ -61,6 +61,10 @@ class MessengerService {
     MessagePosition position = MessagePosition.bottom,
   }) {
     final context = messengerKey.currentContext!;
+    final messenger = messengerKey.currentState;
+
+    // Track if the action was pressed
+    bool actionPressed = false;
 
     final snackBar = SnackBar(
       content: Row(
@@ -90,13 +94,21 @@ class MessengerService {
         label: closeText,
         textColor: _getForegroundColor(type),
         onPressed: () {
-          messengerKey.currentState?.hideCurrentSnackBar();
+          actionPressed = true;
+          messenger?.hideCurrentSnackBar();
           onClose?.call();
         },
       ),
     );
 
-    messengerKey.currentState?.showSnackBar(snackBar);
+    messenger?.showSnackBar(snackBar);
+
+    // Manually dismiss after duration if not already dismissed
+    Future.delayed(duration, () {
+      if (!actionPressed) {
+        messenger?.hideCurrentSnackBar();
+      }
+    });
   }
 
   //#region Helper methods
